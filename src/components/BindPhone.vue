@@ -19,7 +19,7 @@
             <div style="padding:15px 0;">
                 <x-button  type="primary" :text="confirmBtn.text" :disabled="confirmBtn.disabled"
                 :show-loading="confirmBtn.loading" @click.native="confirm"></x-button>
-            </div>
+              </div>
             <toast v-model="toast.show" :type="toast.type" :text="toast.text"></toast>
         </div>
       </template>
