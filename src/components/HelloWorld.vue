@@ -1,6 +1,6 @@
 <template>
     <div>
-      我是helloworld
+      震元母婴护理中心欢迎您
     </div>
 </template>
   

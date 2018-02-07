@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-    <router-link :to="{path:'/'}">首页</router-link>
-    <router-link :to="{path:'/bind'}">绑定</router-link>
-    <router-link :to="{path:'/test'}">测试</router-link>
     <router-view/>
   </div>
 </template>

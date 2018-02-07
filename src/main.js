@@ -3,7 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import { WechatPlugin } from 'vux'
+
 Vue.config.productionTip = false
+Vue.use(WechatPlugin)
 
 /* eslint-disable no-new */
 new Vue({
