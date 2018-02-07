@@ -25,45 +25,22 @@ const router = new Router({
       name: 'AccountParent',
       component: AccountParent,
       children:[
-        {
-          path:"clubservice",
-          name :'ClubService',
-          component: ClubService
-        },
-        {
-          path:"growthrecord",
-          name :'GrowthRecord',
-          component: GrowthRecord
-        },
-        {
-          path:"healthmom",
-          name :'HealthMom',
-          component: HealthMom
-        },
-        {
-          path:"myaccount",
-          name :'MyAccount',
-          component: MyAccount
-        }
+        {path:'',name :'ClubService',component: ClubService,redirect:'clubservice'},
+        {path:'clubservice',name :'ClubService',component: ClubService},
+        {path:"growthrecord",name :'GrowthRecord',component: GrowthRecord},
+        {path:"healthmom",name :'HealthMom',component: HealthMom},
+        {path:"myaccount",name :'MyAccount',component: MyAccount}
       ]
     },
-    {
-      path: '/bind',
-      name: 'BindPhone',
-      component: BindPhone
-    },
-    {
-      path:'/test',
-      name: 'Test',
-      component: Test
-    }
+    {path: '/bind',name: 'BindPhone',component: BindPhone},
+    {path:'/test',name: 'Test',component: Test}
   ]
 })
 router.beforeEach(function(to,from,next){
-  if(to.name=='Account'){
+  if(to.path.startsWith('/account')){
     let bind = getCookie("bind");
     if(!bind || bind=='-1'){
-      router.push({name:"ClubService"});
+      router.push({name:"BindPhone"});
     }
   }
   next();

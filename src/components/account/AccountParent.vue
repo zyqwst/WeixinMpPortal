@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>{{$route.params.username}}</div>
+        <div>{{username}}</div>
         <router-view/>
         <tabbar>
             <tabbar-item selected link="/account/张亚强/clubservice">
@@ -30,6 +30,7 @@
             Tabbar,
             TabbarItem
         },
+        props:['username'],
         data(){
             return {
                 
