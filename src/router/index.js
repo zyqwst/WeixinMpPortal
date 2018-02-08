@@ -13,7 +13,6 @@ import {getCookie} from '../utils/cookie-util'
 Vue.use(Router)
 
 const router = new Router({
-  mode: 'history',
   routes: [
     {
       path: '/',
@@ -21,30 +20,28 @@ const router = new Router({
       component: HelloWorld
     },
     {
-      path: '/account/:usernmae',
-      name: 'AccountParent',
+      path: '/account',
       component: AccountParent,
       children:[
-        {path:'',name :'ClubService',component: ClubService,redirect:'clubservice'},
-        {path:'clubservice',name :'ClubService',component: ClubService},
-        {path:"growthrecord",name :'GrowthRecord',component: GrowthRecord},
-        {path:"healthmom",name :'HealthMom',component: HealthMom},
-        {path:"myaccount",name :'MyAccount',component: MyAccount}
+        {path:'',name :'ClubService',component: ClubService,meta:{requireAuth:true}},
+        {path:"growthrecord",name :'GrowthRecord',component: GrowthRecord,meta:{requireAuth:true}},
+        {path:"healthmom",name :'HealthMom',component: HealthMom,meta:{requireAuth:true}},
+        {path:"myaccount",name :'MyAccount',component: MyAccount,meta:{requireAuth:true}}
       ]
     },
     {path: '/bind',name: 'BindPhone',component: BindPhone},
     {path:'/test',name: 'Test',component: Test}
   ]
 })
-router.beforeEach(function(to,from,next){
-  if(to.path.startsWith('/account')){
-    let bind = getCookie("bind");
-    if(!bind || bind=='-1'){
-      router.push({name:"BindPhone"});
-    }
-  }
-  next();
-})
+// router.beforeEach(function(to,from,next){
+//   let bind = getCookie("bind");
+//   console.log(to.fullPath+to.meta.requireAuth);
+//   if(to.meta.requireAuth && (!bind || bind=='-1')){
+//     next({name:'BindPhone',query:{redirect:to.fullPath}});
+//   }else{
+//     next();
+//   }
+// })
 
 export default router
 
