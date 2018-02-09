@@ -8,7 +8,8 @@ import ClubService from '@/components/account/ClubService'
 import GrowthRecord from '@/components/account/GrowthRecord'
 import HealthMom from '@/components/account/HealthMom'
 import MyAccount from '@/components/account/MyAccount'
-import ShowAll from '@/components/show/ShowAll'
+import ShowParent from '@/components/show/ShowParent'
+import ShowDtl from '@/components/show/ShowDtl'
 
 import {getCookie} from '../utils/cookie-util'
 Vue.use(Router)
@@ -22,8 +23,10 @@ const router = new Router({
     },
     {
       path:'/show',
-      component:ShowAll,
-      meta:{title:'中心展示'}
+      component:ShowParent,
+      children:[
+        {path:'',name:'ShowDtl',component:ShowDtl,meta:{title:'展示'}}
+      ]
     },
     {
       path: '/account',

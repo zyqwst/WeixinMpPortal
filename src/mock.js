@@ -27,5 +27,7 @@ const htmlData = function(){
     }
     return html.join();
 }
-// Mock.mock( url, post/get , 返回的数据)；
+Mock.setup({
+    timeout: '2000-5000' // 表示响应时间介于 200 和 600 毫秒之间，默认值是'10-100'。
+});
 Mock.mock('/html',  htmlData);
