@@ -8,6 +8,7 @@ import ClubService from '@/components/account/ClubService'
 import GrowthRecord from '@/components/account/GrowthRecord'
 import HealthMom from '@/components/account/HealthMom'
 import MyAccount from '@/components/account/MyAccount'
+import ShowAll from '@/components/show/ShowAll'
 
 import {getCookie} from '../utils/cookie-util'
 Vue.use(Router)
@@ -20,13 +21,18 @@ const router = new Router({
       component: HelloWorld
     },
     {
+      path:'/show',
+      component:ShowAll,
+      meta:{title:'中心展示'}
+    },
+    {
       path: '/account',
       component: AccountParent,
       children:[
-        {path:'',name :'ClubService',component: ClubService,meta:{requireAuth:true}},
-        {path:"growthrecord",name :'GrowthRecord',component: GrowthRecord,meta:{requireAuth:true}},
-        {path:"healthmom",name :'HealthMom',component: HealthMom,meta:{requireAuth:true}},
-        {path:"myaccount",name :'MyAccount',component: MyAccount,meta:{requireAuth:true}}
+        {path:'',name :'ClubService',component: ClubService,meta:{requireAuth:true,title:'会所服务'}},
+        {path:"growthrecord",name :'GrowthRecord',component: GrowthRecord,meta:{requireAuth:true,title:'成长记录'}},
+        {path:"healthmom",name :'HealthMom',component: HealthMom,meta:{requireAuth:true,title:'健康妈妈'}},
+        {path:"myaccount",name :'MyAccount',component: MyAccount,meta:{requireAuth:true,title:'会员中心'}}
       ]
     },
     {path: '/bind',name: 'BindPhone',component: BindPhone},

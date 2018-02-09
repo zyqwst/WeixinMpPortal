@@ -4,6 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { WechatPlugin,ToastPlugin } from 'vux'
+Vue.use(require('vue-wechat-title'))
+
+require('./mock.js')
 
 import api from '@/utils/api'
 import errorHandle from '@/utils/errorHandle'

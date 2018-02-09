@@ -1,7 +1,7 @@
 import axios from "@/utils/axios"
 
-let apiUrl = "http://www.sviip.com/wechat/support";
-
+//let apiUrl = "http://www.sviip.com/wechat/support";
+let apiUrl = "";
 export default {
     install(Vue) {
         Vue.prototype.$api = {

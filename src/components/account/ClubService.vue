@@ -1,7 +1,7 @@
 <template>
     <div>
         会所服务
-        <p v-for="i in 100">{{i}}</p>
+        <pre v-html="clubData"></pre>
     </div>
 </template>
 <script>
@@ -10,14 +10,15 @@
             return{
                 loading: false,
                 post : null,
-                error : null
+                error : null,
+                clubData:''
             }
         },
-        created: function(){
+        mounted: function(){
             let that = this;
-            that.$api.get('/clubService')
+            that.$api.post('/clubService')
             .then(function(data){
-                alert(data);
+                that.clubData = data.data;
             })
             .catch(that.$errorHandle);
         },

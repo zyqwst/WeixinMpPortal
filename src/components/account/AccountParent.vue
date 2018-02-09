@@ -2,11 +2,9 @@
     <div>   
             头部
             <view-box >
-                <div >
                 <keep-alive>
-                    <router-view/>
+                    <router-view  v-wechat-title="$route.meta.title"/>
                 </keep-alive>
-                </div>
             </view-box>
         <tabbar style="position:fixed" body-padding-bottom="55px" slot="bottom">
             <tabbar-item selected link="/account">
