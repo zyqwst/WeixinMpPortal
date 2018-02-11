@@ -2,10 +2,18 @@
 const Mock = require('mockjs');
 // 获取 mock.Random 对象
 const Random = Mock.Random;
+const successData = function(data){
+    return {status:1,object:data}
+}
+const failureData = function(msg){
+    return {status:1,msg:msg}
+}
 // mock一组数据
 const produceNewsData = function() {
     let articles = [];
-    for (let i = 0; i < 100; i++) {
+    let size = Random.integer(1, 8);
+    console.info('随机数',size)
+    for (let i = 0; i < size; i++) {
         let newArticleObject = {
             title: Random.csentence(5, 30), //  Random.csentence( min, max )
             thumbnail_pic_s: Random.dataImage('300x250', 'mock的图片'), // Random.dataImage( size, text ) 生成一段随机的 Base64 图片编码
@@ -22,12 +30,13 @@ const produceNewsData = function() {
  
 const htmlData = function(){
     let html = [];
-    for(let i = 0;i<15;i++){
-        html.push('<div><img src=\''+ Random.dataImage('300x250', 'mock的图片'+i)+'\'/><p>'+Random.csentence(5, 15)+'</p></div>');
+    let size = Random.integer(1, 8);
+    for(let i = 0;i<size;i++){
+        html.push('<div style=\'text-align:center\'><img src=\''+ Random.dataImage('300x250', 'mock的图片'+i)+'\'/><p>'+Random.csentence(5, 15)+'</p></div>');
     }
-    return html.join();
+    return  successData(html.join(''));
 }
 Mock.setup({
-    timeout: '2000-5000' // 表示响应时间介于 200 和 600 毫秒之间，默认值是'10-100'。
+    timeout: '500-2000' // 表示响应时间介于 200 和 600 毫秒之间，默认值是'10-100'。
 });
 Mock.mock('/html',  htmlData);

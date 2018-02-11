@@ -22,11 +22,11 @@ const router = new Router({
       component: HelloWorld
     },
     {
-      path:'/show',
-      component:ShowParent,
-      children:[
-        {path:'',name:'ShowDtl',component:ShowDtl,meta:{title:'展示'}}
-      ]
+      path:'/show/:id',
+      component:ShowParent
+      // children:[
+      //   {path:'',name:'ShowDtl',component:ShowDtl,meta:{title:'展示'}}
+      // ]
     },
     {
       path: '/account',
