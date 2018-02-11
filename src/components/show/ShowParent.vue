@@ -10,7 +10,7 @@
             </div>
         </view-box>
         <tabbar style="position:fixed" body-padding-bottom="55px" slot="bottom">
-            <tabbar-item :selected="selectTabId === item.id" v-for="item in tabItems" :key="item.id" @on-item-click="onItemClick">
+            <tabbar-item :selected="selectTabId === item.id" v-for="item in tabItems" :key="item.id" @on-item-click="onItemClick" class="albert-tab-item">
                 <span slot="label">{{item.title}}</span>
             </tabbar-item>
         </tabbar>
@@ -46,6 +46,7 @@
             }
         },
         created(){
+             document.title='震元母婴护理中心'
              let list = [{title:'客房展示',id:10}, {title:'月嫂展示',id:20},{title:'专家介绍',id:30}, {title:'护士介绍',id:40}, {title:'套餐介绍',id:50}]
              this.tabItems = list
         },
@@ -92,6 +93,9 @@
 <style>
     .vux-tabbar-simple .weui-tabbar__label{
         line-height: 20px !important
+    }
+    .albert-tab-item{
+        text-decoration: none;
     }
 </style>
 

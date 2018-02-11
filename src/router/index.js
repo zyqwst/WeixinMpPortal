@@ -23,7 +23,8 @@ const router = new Router({
     },
     {
       path:'/show/:id',
-      component:ShowParent
+      component:ShowParent,
+      meta:{title:'震元母婴护理中心'}
       // children:[
       //   {path:'',name:'ShowDtl',component:ShowDtl,meta:{title:'展示'}}
       // ]
