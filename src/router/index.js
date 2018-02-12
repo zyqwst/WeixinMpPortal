@@ -33,10 +33,10 @@ const router = new Router({
       path: '/account',
       component: AccountParent,
       children:[
-        {path:'',name :'ClubService',component: ClubService,meta:{requireAuth:true,title:'会所服务'}},
-        {path:"growthrecord",name :'GrowthRecord',component: GrowthRecord,meta:{requireAuth:true,title:'成长记录'}},
-        {path:"healthmom",name :'HealthMom',component: HealthMom,meta:{requireAuth:true,title:'健康妈妈'}},
-        {path:"myaccount",name :'MyAccount',component: MyAccount,meta:{requireAuth:true,title:'会员中心'}}
+        {path:'',name :'ClubService',component: ClubService,meta:{requireAuth:true,title:'会所服务',id:1}},
+        {path:"growthrecord",name :'GrowthRecord',component: GrowthRecord,meta:{requireAuth:true,title:'成长记录',id:2}},
+        {path:"healthmom",name :'HealthMom',component: HealthMom,meta:{requireAuth:true,title:'健康妈妈',id:3}},
+        {path:"myaccount",name :'MyAccount',component: MyAccount,meta:{requireAuth:true,title:'会员中心',id:4}}
       ]
     },
     {path: '/bind',name: 'BindPhone',component: BindPhone},

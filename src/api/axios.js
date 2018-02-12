@@ -25,8 +25,8 @@ axios.interceptors.response.use(response =>{
     throw err
 },
     err =>{
-        console.info('axios-err',err)
-        return Promise.reject(err)
+        Vue.prototype.instance.$vux.toast.show(err.message);
+        return Promise.reject(err);
     }
 )
 

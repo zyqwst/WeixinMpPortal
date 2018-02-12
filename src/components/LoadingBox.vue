@@ -1,6 +1,7 @@
 <template>
     <div  class="loading">
         <spinner type="android"/>
+        <div style="color:#999"><slot></slot></div>
     </div>
 </template>
 <script>

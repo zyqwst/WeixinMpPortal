@@ -14,10 +14,11 @@ export default {
 @import '~vux/src/styles/close.less';
 @import '~vux/src/styles/1px.less';
 #app {
-
   width: 100%;
   margin-bottom: 50px;
   overflow: hidden;
+  z-index:1;
+  position:relative
 }
 
 </style>

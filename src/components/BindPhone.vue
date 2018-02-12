@@ -1,6 +1,6 @@
 <template>
         <div>
-        <div class="vux-demo">
+        <div class="vux-demo" style="text-align:center">
         <img class="logo" src="../assets/logo.png">
         </div>
           <group class="weui-cells_form">
@@ -16,7 +16,7 @@
                 <span slot="right" v-show="!vcode.show">秒</span>
             </x-input>
             </group>
-            <div style="padding:15px 0;">
+            <div style="padding:15px;">
                 <x-button  type="primary" :text="confirmBtn.text" :disabled="confirmBtn.disabled"
                 :show-loading="confirmBtn.loading" @click.native="confirm"></x-button>
               </div>
@@ -39,7 +39,7 @@
             toast :{show:false,text:"提示",type:"text"},
             phoneNumber : "",
             vcode : {val:"",text:"获取验证码",time:59,disabled:false,show:true,start:false},
-            confirmBtn : {text:'提交',disabled:false,loading:false},
+            confirmBtn : {text:'绑定',disabled:false,loading:false},
           }
         },
         methods:{

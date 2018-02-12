@@ -1,33 +1,39 @@
 <template>
     <div>
-        会所服务
-        <pre v-html="clubData">loading...</pre>
+        <loading-box v-show='show.isLoading'>
+        </loading-box>
+        <pre v-html="clubData" v-show='show.post'>loading...</pre>
     </div>
 </template>
 <script>
+    import loadingBox from '@/components/LoadingBox'
     export default{
+        components:{
+            loadingBox
+        },
         data (){
             return{
-                loading: false,
-                post : null,
-                error : null,
+                show:{
+                    post:false,
+                    isLoading:false
+                },
                 clubData:''
             }
         },
         mounted(){
             this.getFetch();
         },
-        watch:{
-            
-        },
         methods:{
-            getFetch:function(){
-            let that = this;
-            that.$api.post('/html')
+        getFetch:function(){
+            let _this = this;
+            this.show.isLoading = true;
+            this.$api.post('/html')
             .then(function(data){
-                that.clubData = data.data;
+                _this.clubData = data.object;
+                _this.show.isLoading = false;
+                _this.show.post = true;
             })
-            .catch(that.$errorHandle);
+            .catch(this.$errorHandle);
         }
         }
     }

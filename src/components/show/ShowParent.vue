@@ -56,13 +56,14 @@
             this.selectTabId = parseInt(this.$route.params.id);
             this.fetchData(this.selectTabId);
         },
-        computed:{
-            // ...mapState(['showItem'])
+        watch:{
+            selectTabId: function(val){
+                console.info('watch_selectTabId',val);
+            }
         },
         methods:{
             onItemClick:function(index){
                 this.selectTabId = this.tabItems[index].id;
-                console.info('selectTabId',this.selectTabId)
                 this.show.post = false;
                 this.show.isLoading = true;
                 let item = this.$store.getters.getItemById(this.selectTabId);
