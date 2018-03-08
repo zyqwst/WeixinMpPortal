@@ -3,7 +3,7 @@ export const CLEAR_CONTENT = 'CLEAR_CONTENT'
 
 export default {
     state: {
-        showItem:{id:-1,content:''},
+        showItem:{id:'',content:''},
         showItems:[]
     },
     actions: {

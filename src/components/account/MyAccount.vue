@@ -6,24 +6,19 @@
         <card :header='{title:header}'>
             <div slot="content" class="card-demo-flex card-demo-content01">
                 <div class="vux-1px-r">
-                <span>1130</span>
+                <span>{{cardAmount}}</span>
                 <br/>
-                    储值卡
+                    会员卡余额
                 </div>
                 <div class="vux-1px-r">
-                <span>15</span>
+                <span>{{scoreAmount}}</span>
                 <br/>
-                    微信账户
-                </div>
-                <div class="vux-1px-r">
-                <span>0</span>
-                <br/>
-                    可用积分
+                    积分
                 </div>
                 <div>
-                <span>88</span>
+                <span>{{coupon}}张</span>
                 <br/>
-                    其他
+                    优惠券
                 </div>
             </div>    
         </card>
@@ -41,6 +36,22 @@
             url: 'https://o3e85j0cv.qnssl.com/waterway-107810__340.jpg',
             header:'我的钱包'
         }
+      },
+      mounted(){
+          
+      },
+      method:{
+          fetched :function(){
+            let _this = this;
+            this.$api.post('/myaccount/')
+            .then(function(data){
+                _this.$store.dispatch('addContent',{id:id,content:data.object})
+                _this.show.post = true;
+                _this.show.isLoading = false;
+                _this.showItem = _this.$store.getters.getItemById(id);
+            })
+            .catch(this.$errorHandle);
+          }
       }
     }
 </script>

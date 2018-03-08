@@ -1,6 +1,6 @@
 import axios from "./axios"
 
-//let apiUrl = "http://www.sviip.com/wechat/support";
+//let apiUrl = "http://www.sviip.com/wechat/api";
 let apiUrl = "";
 export default {
     install(Vue) {

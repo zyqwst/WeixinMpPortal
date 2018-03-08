@@ -7,11 +7,14 @@ import { WechatPlugin,ToastPlugin } from 'vux'
 import Vuex from 'vuex'
 Vue.use(require('vue-wechat-title'))
 
+
+
 require('./mock.js')
 
 import api from '@/api/api'
 import errorHandle from '@/utils/errorHandle'
 import store from '@/vuex/store'
+
 
 Vue.config.productionTip = false
 

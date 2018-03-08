@@ -27,16 +27,56 @@ const produceNewsData = function() {
         articles: articles
     }
 }
- 
+//html data
 const htmlData = function(){
     let html = [];
-    let size = Random.integer(1, 8);
+    let size = Random.integer(5, 20);
     for(let i = 0;i<size;i++){
         html.push('<div style=\'text-align:center\'><img src=\''+ Random.dataImage('300x250', 'mock的图片'+i)+'\'/><p>'+Random.csentence(5, 15)+'</p></div>');
     }
     return  successData(html.join(''));
 }
+//
+const myaccount = function(){
+    let data = {};
+    data.cardAmount =  Random.csentence(0, 1000);
+}
+const growthrecord = function(){
+    return successData({
+        labels: [Random.integer(1, 8), Random.integer(1, 8)],
+        datasets: [
+          {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: [Random.integer(1, 8), Random.integer(1, 8)]
+          }, {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: [Random.integer(1, 8), Random.integer(1, 8)]
+          }
+        ]
+      })
+}
+const stores = function(){
+    let data = []
+    for(let i = 0;i<6;i++){
+        data.push({id:i,name:'门店'+Random.csentence(5, 10)});    
+    }
+    return successData({
+        data
+    });
+}
 Mock.setup({
-    timeout: '500-2000' // 表示响应时间介于 200 和 600 毫秒之间，默认值是'10-100'。
+    timeout: '800-1000' // 表示响应时间介于 200 和 600 毫秒之间，默认值是'10-100'。
 });
-Mock.mock('/html',  htmlData);
+/*门店数据 */
+Mock.mock('/show/store',stores)
+/*begin展示页面*/
+Mock.mock(/\/show\/room\/\d/,  htmlData);
+Mock.mock(/\/show\/nanny\/\d/,  htmlData);
+Mock.mock(/\/show\/expert\/\d/,  htmlData);
+Mock.mock(/\/show\/nurser\/\d/,  htmlData);
+Mock.mock(/\/show\/package\/\d/,  htmlData);
+/*end展示页面 */
+Mock.mock('/account/myaccount',myaccount);
+Mock.mock('/account/growthrecord',growthrecord);
