@@ -28,7 +28,7 @@ const router = new Router({
       path: '/account',
       component: AccountParent,
       children:[
-        {path:'',name :'GrowthRecord',component: GrowthRecord,meta:{requireAuth:true,title:'成长记录',id:2}},
+        {path:'growthrecord',name :'GrowthRecord',component: GrowthRecord,meta:{requireAuth:true,title:'成长记录',id:2}},
         {path:"myaccount",name :'MyAccount',component: MyAccount,meta:{requireAuth:true,title:'会员中心',id:4}}
       ]
     },

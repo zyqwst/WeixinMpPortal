@@ -41,21 +41,51 @@ const myaccount = function(){
     let data = {};
     data.cardAmount =  Random.csentence(0, 1000);
 }
-const growthrecord = function(){
-    return successData({
-        labels: [Random.integer(1, 8), Random.integer(1, 8)],
-        datasets: [
-          {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [Random.integer(1, 8), Random.integer(1, 8)]
-          }, {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [Random.integer(1, 8), Random.integer(1, 8)]
-          }
-        ]
-      })
+let gen = function(){
+    let size=Random.integer(1,7);
+    let data=[];
+    let x=[]
+    for(let i = 1 ;i<=size;i++){
+        x.push(Random.date('M-dd'))
+        data.push(Random.integer(2000,4500))
+    }
+    return {'x':x,'data':data}
+}
+const growthrecord = function(label){
+
+    let collection = []
+    for(let i =0;i<Random.integer(1,8);i++){
+        let gen = function(){
+            let size=Random.integer(1,7);
+            let data=[];
+            let x=[]
+            for(let i = 1 ;i<=size;i++){
+                x.push(Random.date('M-dd'))
+                data.push(Random.integer(2000,4500))
+            }
+            return {'x':x,'data':data}
+        }
+        collection.push({
+            labels: gen().x,
+            options:{
+                legend: {
+                    display: false,
+                  }
+            },
+            datasets: [
+              {
+                label: label,
+                showLabel:false,
+                backgroundColor: '#d42930',
+                fill:false,
+                borderColor:'#d42930',
+                borderWidth: 2,
+                data: gen().data
+              }
+            ]
+          })
+    }
+    return successData(collection)
 }
 const stores = function(){
     let storeD = [];
@@ -78,4 +108,5 @@ Mock.mock(/\/show\/nurse\/\d/,  htmlData);
 Mock.mock(/\/show\/package\/\d/,  htmlData);
 /*end展示页面 */
 Mock.mock('/account/myaccount',myaccount);
-Mock.mock('/account/growthrecord',growthrecord);
+Mock.mock(/\/member\/baby\/height\/\d/,growthrecord('身高'));
+Mock.mock(/\/member\/baby\/weight\/\d/,growthrecord('体重'));
