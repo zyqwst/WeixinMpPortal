@@ -58,13 +58,12 @@ const growthrecord = function(){
       })
 }
 const stores = function(){
-    let data = []
+    let storeD = [];
     for(let i = 0;i<6;i++){
-        data.push({id:i,name:'门店'+Random.csentence(5, 10)});    
+        storeD.push({id:i,name:'门店'+Random.csentence(5, 10)});    
     }
-    return successData({
-        data
-    });
+    return successData(storeD)
+  
 }
 Mock.setup({
     timeout: '800-1000' // 表示响应时间介于 200 和 600 毫秒之间，默认值是'10-100'。
@@ -75,7 +74,7 @@ Mock.mock('/show/store',stores)
 Mock.mock(/\/show\/room\/\d/,  htmlData);
 Mock.mock(/\/show\/nanny\/\d/,  htmlData);
 Mock.mock(/\/show\/expert\/\d/,  htmlData);
-Mock.mock(/\/show\/nurser\/\d/,  htmlData);
+Mock.mock(/\/show\/nurse\/\d/,  htmlData);
 Mock.mock(/\/show\/package\/\d/,  htmlData);
 /*end展示页面 */
 Mock.mock('/account/myaccount',myaccount);

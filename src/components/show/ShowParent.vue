@@ -82,7 +82,7 @@
         },
         created(){
              document.title='震元母婴护理中心'
-             let list = [{title:'客房展示',type:'room'}, {title:'月嫂展示',type:'nanny'},{title:'专家介绍',type:'expert'}, {title:'护士介绍',type:'nurser'}, {title:'套餐介绍',type:'package'}]
+             let list = [{title:'客房展示',type:'room'}, {title:'月嫂展示',type:'nanny'},{title:'专家介绍',type:'expert'}, {title:'护士介绍',type:'nurse'}, {title:'套餐介绍',type:'package'}]
              this.tabItems = list
         },
         mounted(){
@@ -133,7 +133,7 @@
             fetchData: function(id) {
                 let _this = this;
                 _this.$router.replace("/show/"+id);
-                this.$api.post('/show/'+id)
+                this.$api.get('/show/'+id)
                 .then(function(data){
                     _this.$store.dispatch('addContent',{id:id,content:data.object})
                     _this.show.post = true;
@@ -144,10 +144,9 @@
             },
             fetchStore:function(){
                 let _this=this
-                _this.$api.post('/show/store')
+                _this.$api.get('/show/store')
                 .then(function(data){
-
-                    _this.stores = data.object.data
+                    _this.stores = data.object
                     _this.selectStore = _this.stores[0]
                     _this.selectTabId = _this.$route.params.type+'/'+_this.selectStore.id;
                     _this.fetchData(_this.selectTabId);

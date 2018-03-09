@@ -10,7 +10,7 @@ axios.interceptors.response.use(response =>{
     if(!result){
         result = {
             status:-1,
-            msg:'为请求到数据'
+            msg:'数据请求失败'
         }
     }
     switch(result.status){
