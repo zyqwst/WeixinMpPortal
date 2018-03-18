@@ -1,5 +1,10 @@
-//获取cookie、
-export function getCookie(name) {
+  export let Cookies = {
+    Authorization:'Authorization',
+    //进入授权页面前将要访问的路由
+    pathBeforeAuthor:'pathBeforeAuthor'
+  }
+  //获取cookie、
+  export function getCookie(name) {
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
     if (arr = document.cookie.match(reg))
      return (arr[2]);

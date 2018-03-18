@@ -1,61 +1,100 @@
 <template>
     <div>
-        <blur :blur-amount=40 :url="url">
-            <p class="center"><img :src="url"></p>
-        </blur>
-        <card :header='{title:header}'>
-            <div slot="content" class="card-demo-flex card-demo-content01">
-                <div class="vux-1px-r">
-                <span>{{cardAmount}}</span>
-                <br/>
-                    会员卡余额
-                </div>
-                <div class="vux-1px-r">
-                <span>{{scoreAmount}}</span>
-                <br/>
-                    积分
-                </div>
-                <div>
-                <span>{{coupon}}张</span>
-                <br/>
-                    优惠券
-                </div>
-            </div>    
-        </card>
+        <loading-box v-show="show.isLoading"></loading-box>
+        <div v-show="show.post">
+            <group>
+                <cell title='用户1' inline-desc='ID：12343243'>
+                    <img slot='icon' style="width:4em;height:4em;margin-right:1em" :src='url'/>
+                    <img :src='cardImg' style='width:1.5em'  @click="showQrcode"/>
+                </cell>
+            </group>
+            <group>
+                <cell :title="wallet.card.label" :value='wallet.card.amount' link="/member/recharge">
+                    <img slot='icon' style="height: 1.3em;vertical-align:middle;margin-right:0.8em" :src='cardImg'/>
+                </cell>
+                <cell :title="wallet.coupons.label" :value='wallet.coupons.amount' link="/member/coupons">
+                    <img slot='icon' style="height: 1.3em;vertical-align:middle;margin-right:0.8em" :src='couponsImg'/>
+                </cell>
+                <cell :title="wallet.score.label" :value='wallet.score.amount'  link="/member/score">
+                    <img slot='icon' style="height: 1.3em;vertical-align:middle;margin-right:0.8em" :src='scoreImg'/>
+                </cell>
+            </group>
+    
+            <group>
+                <cell title="成长记录" v-show='wallet.growthrecord.show' link="/member/growthrecord">
+                    <img slot='icon' style="height: 1.3em;vertical-align:middle;margin-right:0.8em" :src='scoreImg'/>
+                </cell>
+                <cell title="陪客餐" v-show='wallet.meal.show' link="ddd">
+                    <img slot='icon' style="height: 1.3em;vertical-align:middle;margin-right:0.8em" :src='scoreImg'/>
+                </cell>
+                <cell title="调查问卷" v-show='wallet.question.show'  link="ddd">
+                    <img slot='icon' style="height: 1.3em;vertical-align:middle;margin-right:0.8em" :src='scoreImg'/>
+                </cell>
+                <cell title="出所评价" v-show='wallet.evaluate.show'  link="ddd">
+                    <img slot='icon' style="height: 1.3em;vertical-align:middle;margin-right:0.8em" :src='scoreImg'/>
+                </cell>
+            </group>
+            <group>
+                <cell title="在线反馈"  link="ddd">
+                        <img slot='icon' style="height: 1.3em;vertical-align:middle;margin-right:0.8em" :src='scoreImg'/>
+                    </cell>
+            </group>
+        </div>
     </div>
 </template>
 <script>
-    import {  Blur,Card } from 'vux'
+    import {  Group, Cell, CellBox ,Blur,Card } from 'vux'
+    import loadingBox from '@/components/LoadingBox'
     export default {
       components: {
-        Blur,
-        Card
+        Blur,loadingBox,
+        Card,Group, Cell, CellBox 
       },
       data(){
         return {
+            show:{
+                post:false,
+                isLoading:true
+            },
             url: 'https://o3e85j0cv.qnssl.com/waterway-107810__340.jpg',
-            header:'我的钱包'
+            wallet_header:'我的钱包',
+            cardImg:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=',
+            couponsImg:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=',
+            scoreImg:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=',
+            wallet:{
+                card:{label:'卡余额',amount:68},
+                coupons:{label:'卡券',amount:4},
+                score:{label:'积分',amount:980},
+                growthrecord:{show:false},//成长记录
+                meal:{show:false}, //陪客餐
+                question:{show:false}, //调查问卷
+                evaluate:{show:false} //出所评价
+            }
+            
         }
       },
       mounted(){
-          
+        
+        this.getFetch()
       },
-      method:{
-          fetched :function(){
+      methods:{
+        getFetch(){
             let _this = this;
-            this.$api.post('/myaccount/')
+            this.$api.get('/wechat/member/wallet')
             .then(function(data){
-                _this.$store.dispatch('addContent',{id:id,content:data.object})
+                _this.wallet = data.object
                 _this.show.post = true;
                 _this.show.isLoading = false;
-                _this.showItem = _this.$store.getters.getItemById(id);
             })
             .catch(this.$errorHandle);
-          }
+          },
+        showQrcode(){
+            this.$router.push('/wechat/member/qrcode');
+        }
       }
     }
 </script>
-<style scoped lang="less">
+<style lang="less">
 @import '~vux/src/styles/1px.less';
 
 .center {
@@ -86,5 +125,20 @@
 }
 .card-demo-flex span {
   color: #f74c31;
+}
+a{
+    text-decoration: none ;
+}
+.weui-cells{
+    font-size:14px !important;
+    .weui-cell__bd,.vux-cell-bd   {
+        p{
+        margin: 0;
+        padding: 0;
+        }
+    }
+    .weui-cell__hd{
+
+    }
 }
 </style>

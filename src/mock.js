@@ -36,11 +36,7 @@ const htmlData = function(){
     }
     return  successData(html.join(''));
 }
-//
-const myaccount = function(){
-    let data = {};
-    data.cardAmount =  Random.csentence(0, 1000);
-}
+
 let gen = function(){
     let size=Random.integer(1,7);
     let data=[];
@@ -95,18 +91,36 @@ const stores = function(){
     return successData(storeD)
   
 }
+const wallet = function(){
+    let wallet = {
+        card:{label:'卡余额',amount:68},
+        coupons:{label:'卡券',amount:4},
+        score:{label:'积分',amount:980},
+        growthrecord:{show:true},//成长记录
+        meal:{show:true}, //陪客餐
+        question:{show:true}, //调查问卷
+        evaluate:{show:true} //出所评价
+    }
+    return successData(wallet)
+}
+const barcode = function(){
+    return successData({qrcode:Random.csentence(10,40),timestamp:1234});
+}
 Mock.setup({
     timeout: '800-1000' // 表示响应时间介于 200 和 600 毫秒之间，默认值是'10-100'。
 });
-/*门店数据 */
-Mock.mock('/show/store',stores)
-/*begin展示页面*/
-Mock.mock(/\/show\/room\/\d/,  htmlData);
-Mock.mock(/\/show\/nanny\/\d/,  htmlData);
-Mock.mock(/\/show\/expert\/\d/,  htmlData);
-Mock.mock(/\/show\/nurse\/\d/,  htmlData);
-Mock.mock(/\/show\/package\/\d/,  htmlData);
-/*end展示页面 */
-Mock.mock('/account/myaccount',myaccount);
-Mock.mock(/\/member\/baby\/height\/\d/,growthrecord('身高'));
-Mock.mock(/\/member\/baby\/weight\/\d/,growthrecord('体重'));
+// /*门店数据 */
+// Mock.mock('/show/store',stores)
+// /*begin展示页面*/
+// Mock.mock(/\/show\/room\/\d/,  htmlData);
+// Mock.mock(/\/show\/nanny\/\d/,  htmlData);
+// Mock.mock(/\/show\/expert\/\d/,  htmlData);
+// Mock.mock(/\/show\/nurse\/\d/,  htmlData);
+// Mock.mock(/\/show\/package\/\d/,  htmlData);
+// /*end展示页面 */
+// Mock.mock(/\/member\/baby\/height/,growthrecord('身高'))
+// Mock.mock(/\/member\/baby\/weight/,growthrecord('体重'))
+// /**个人账户首页 */
+// Mock.mock('/member/wallet',wallet)
+// /**电子会员卡（二维码数据） */
+// Mock.mock('/member/qrcode',barcode);

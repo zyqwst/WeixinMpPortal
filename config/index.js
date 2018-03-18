@@ -38,10 +38,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '/Users/albert/Documents/workspace/confinement_mp/src/main/resources/static/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, '/Users/albert/Documents/workspace/confinement_mp/src/main/resources/static'),
     assetsSubDirectory: '',
     assetsPublicPath: '/',
 

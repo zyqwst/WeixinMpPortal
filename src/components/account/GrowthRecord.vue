@@ -1,5 +1,6 @@
 <template>
     <div>
+        <x-header :left-options="{backText: '返回'}">成长记录</x-header>
         <div style="padding: 15px;">
             <button-tab>
                 <button-tab-item selected @on-item-click="getHeight">身高</button-tab-item>
@@ -18,13 +19,14 @@
 <script>
     import loadingBox from '@/components/LoadingBox'
     import LineChart from './LineChart'
-    import {ButtonTab,ButtonTabItem} from 'vux'
+    import {ButtonTab,ButtonTabItem,XHeader} from 'vux'
     export default{
         components:{
             loadingBox,
             LineChart,
             ButtonTab,
-            ButtonTabItem
+            ButtonTabItem,
+            XHeader
         },
         data(){
             return{
@@ -44,7 +46,7 @@
         methods:{
             getFetch(){
                 let _this = this;
-                this.$api.get('/member/baby/height/11')
+                this.$api.get('/wechat/member/baby/height')
                 .then(function(data){
                     _this.show.post = true
                     _this.show.isLoading = false
@@ -52,7 +54,7 @@
                     _this.showData = data.object
                 })
                 .catch(this.$errorHandle);
-                this.$api.get('/member/baby/weight/11')
+                this.$api.get('/wechat/member/baby/weight')
                 .then(function(data){
                     _this.show.post = true
                     _this.show.isLoading = false
@@ -61,11 +63,9 @@
                 .catch(this.$errorHandle);
             },
             getWeight(){
-                console.log('体重');
                 this.showData=this.weightData
             },
             getHeight(){
-                console.log('身高')
                 this.showData=this.heightData
             }
         }

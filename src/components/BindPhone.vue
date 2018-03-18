@@ -9,7 +9,7 @@
             </x-input>
           </group>
           <group>
-            <x-input placeholder="输入短信验证码" :max="4" :show-clear="false" :min="4" class="weui-vcode" v-model="vcode.val">
+            <x-input placeholder="输入短信验证码" :max="5" :show-clear="false" :min="5" class="weui-vcode" v-model="vcode.val">
                 <x-button slot="right" plain type="primary" mini :disabled="vcode.disabled" :text="vcode.text" v-show="vcode.show" @click.native="getVcode">
                 </x-button>
                 <countdown slot="right" v-model="vcode.time" :start="vcode.start"  @on-finish="finish" v-show="!vcode.show"></countdown>
@@ -34,6 +34,8 @@
           Countdown,
           Toast
         },
+        mounted(){
+        },
         data (){
           return {
             toast :{show:false,text:"提示",type:"text"},
@@ -52,6 +54,14 @@
             }
             this.vcode.show = false;
             this.vcode.start = true;
+            let _this = this;
+            this.$api.get('/push/public/sms/vcode/'+this.phoneNumber)
+            .then(function(data){
+                _this.wallet = data.object
+                _this.show.post = true;
+                _this.show.isLoading = false;
+            })
+            .catch(this.$errorHandle);
           },
           finish: function(){
             this.vcode.show = true;

@@ -100,6 +100,7 @@
                 this.show.post = false;
                 this.show.isLoading = true;
                 let item = this.$store.getters.getItemById(this.selectTabId);
+                this.$router.replace("/show/"+this.selectTabId);
                 if(!item){
                     this.fetchData(this.selectTabId);
                 }else{
@@ -132,8 +133,8 @@
             },
             fetchData: function(id) {
                 let _this = this;
-                _this.$router.replace("/show/"+id);
-                this.$api.get('/show/'+id)
+                console.info('==========',id);
+                this.$api.get('/wechat/show/'+id)
                 .then(function(data){
                     _this.$store.dispatch('addContent',{id:id,content:data.object})
                     _this.show.post = true;
@@ -144,7 +145,7 @@
             },
             fetchStore:function(){
                 let _this=this
-                _this.$api.get('/show/store')
+                _this.$api.get('/wechat/show/store')
                 .then(function(data){
                     _this.stores = data.object
                     _this.selectStore = _this.stores[0]
@@ -164,6 +165,9 @@
     }
     .albert-tab-item{
         text-decoration: none;
+    }
+    .weui-tab__panel img{
+        max-width:100% !important;
     }
 </style>
 
