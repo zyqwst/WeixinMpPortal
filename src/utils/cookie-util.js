@@ -1,7 +1,11 @@
   export let Cookies = {
     Authorization:'Authorization',
     //进入授权页面前将要访问的路由
-    pathBeforeAuthor:'pathBeforeAuthor'
+    pathBeforeAuthor:'pathBeforeAuthor',
+    //绑定手机时服务器响应的code
+    bindVcode:'bindVcode',
+
+    currentUser:'currentUser'
   }
   //获取cookie、
   export function getCookie(name) {

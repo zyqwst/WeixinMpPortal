@@ -12,6 +12,7 @@ import ShowDtl from '@/components/show/ShowDtl'
 import Barcode from '@/components/account/Barcode'
 import Recharge from '@/components/account/wallet/Recharge'
 import Score from '@/components/account/wallet/Score'
+import SpaSubscribe from '@/components/spa/SpaSubscribe'
 
 import Coupons from '@/components/account/wallet/Coupons'
 import {getCookie, setCookie,Cookies} from '../utils/cookie-util'
@@ -36,10 +37,11 @@ const router = new Router({
       children:[
         {path:'growthrecord',name :'GrowthRecord',component: GrowthRecord,meta:{requireAuth:true,title:'成长记录',id:2}},
         {path:"",name :'MyAccount',component: MyAccount,meta:{requireAuth:true,title:'会员中心',id:4}},
-        {path:'qrcode',component:Barcode,meta:{requireAuth:true}},
+        {path:'qrcode',name:'Barcode',component:Barcode,meta:{requireAuth:true}},
         {path:'recharge',component:Recharge},
         {path:'coupons',component:Coupons},
-        {path:'score',component:Score}
+        {path:'score',component:Score},
+        {path:'spa',name:'SpaSubscribe',component:SpaSubscribe},
       ]
     },
     {path: '/bind',name: 'BindPhone',component: BindPhone},

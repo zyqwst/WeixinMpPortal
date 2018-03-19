@@ -3,7 +3,7 @@
         <loading-box v-show="show.isLoading"></loading-box>
         <div v-show="show.post">
             <group>
-                <cell title='用户1' inline-desc='ID：12343243'>
+                <cell :title='username' :inline-desc='userid'>
                     <img slot='icon' style="width:4em;height:4em;margin-right:1em" :src='url'/>
                     <img :src='cardImg' style='width:1.5em'  @click="showQrcode"/>
                 </cell>
@@ -45,6 +45,7 @@
 <script>
     import {  Group, Cell, CellBox ,Blur,Card } from 'vux'
     import loadingBox from '@/components/LoadingBox'
+    import {Cookies} from '@/utils/cookie-util'
     export default {
       components: {
         Blur,loadingBox,
@@ -69,12 +70,15 @@
                 meal:{show:false}, //陪客餐
                 question:{show:false}, //调查问卷
                 evaluate:{show:false} //出所评价
-            }
-            
+            },
+            username:'',
+            userid:''
         }
       },
       mounted(){
-        
+        let curUser = JSON.parse(sessionStorage.getItem(Cookies.currentUser))
+        this.username = curUser.name||'---'
+        this.userid = curUser.id||'---'
         this.getFetch()
       },
       methods:{
@@ -89,7 +93,7 @@
             .catch(this.$errorHandle);
           },
         showQrcode(){
-            this.$router.push('/wechat/member/qrcode');
+            this.$router.push({name:'Barcode'});
         }
       }
     }

@@ -23,7 +23,8 @@ Vue.use(WechatPlugin)
 Vue.use(ToastPlugin)
 Vue.use(api)
 Vue.use(errorHandle)
-
+const FastClick = require('fastclick')
+FastClick.attach(document.body)
 Vue.prototype.instance = new Vue({
   el: '#app',
   router,

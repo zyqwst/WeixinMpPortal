@@ -10,7 +10,8 @@ export default {
             }
             else {
                 //如果是非200，其他错误在这里处理
-                console.log(errorData);
+                console.log('errorHandle:',errorData);
+                Vue.prototype.instance.$vux.toast.show(errorData.data|| errorData);
             }
         }
     }

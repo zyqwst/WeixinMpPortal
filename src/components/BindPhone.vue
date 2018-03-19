@@ -4,7 +4,7 @@
         <img class="logo" src="../assets/logo.png">
         </div>
           <group class="weui-cells_form">
-            <x-input name="mobile" placeholder="输入手机号码" :show-clear="false" keyboard="number" is-type="china-mobile" v-model="phoneNumber">
+            <x-input name="mobile" type="number" placeholder="输入手机号码" :show-clear="false" keyboard="number" is-type="china-mobile" v-model="phoneNumber">
                 <i class="fa fa-phone fa-lg pr-1" slot="label"></i>
             </x-input>
           </group>
@@ -26,6 +26,7 @@
       
       <script>
       import { Group, XButton,XInput,Countdown,Toast } from 'vux'
+      import {Cookies} from '../utils/cookie-util'
       export default {
         components: {
           Group,
@@ -52,14 +53,13 @@
                 this.toast.type = "warn";
                 return;
             }
-            this.vcode.show = false;
-            this.vcode.start = true;
+            this.vcode.show = false
+            this.vcode.start = true
+            this.vcode.time = 59
             let _this = this;
-            this.$api.get('/push/public/sms/vcode/'+this.phoneNumber)
+            this.$api.post('/push/sms/vcode',{'phone':this.phoneNumber})
             .then(function(data){
-                _this.wallet = data.object
-                _this.show.post = true;
-                _this.show.isLoading = false;
+                sessionStorage.setItem(Cookies.bindVcode,data.object)
             })
             .catch(this.$errorHandle);
           },
@@ -75,9 +75,21 @@
             this.confirmBtn.text='提交中...';
             this.confirmBtn.disabled=true;
             this.confirmBtn.loading=true;
-            this.toast.show = true;
-            this.toast.text = "模拟http请求";
-            this.toast.type = "text";
+            let _this = this
+            this.$api.post('/wechat/binding',
+            {
+              "token":sessionStorage.getItem(Cookies.Authorization),
+              "encryptInfo":sessionStorage.getItem(Cookies.bindVcode),
+              "vcode":_this.vcode
+            })
+            .then(function(data){
+               console.info('绑定成功：',data)
+               alert(data.object)
+               sessionStorage.setItem(Cookies.Authorization,data.object)
+               _this.$store.dispatch('setCurrentUser',data.object)
+               _this.$router.replace(sessionStorage.getItem(Cookies.pathBeforeAuthor))
+            })
+            .catch(this.$errorHandle)
           }
         }
       }

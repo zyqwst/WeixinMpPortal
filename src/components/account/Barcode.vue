@@ -33,7 +33,7 @@
                 let _this = this;
                 this.$api.get('/wechat/member/qrcode')
                 .then(function(data){
-                    console.log(data.object);
+                     console.info(data.object);
                     _this.show.post = true
                     _this.show.isLoading = false
                     _this.qrcode = data.object

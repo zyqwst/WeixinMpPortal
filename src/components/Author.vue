@@ -10,6 +10,7 @@
 <script>
     import {Cookies} from '../utils/cookie-util'
     import loadingBox from '@/components/LoadingBox'
+    import { base64 } from 'vux'
     export default{
         data(){
             return{
@@ -38,11 +39,11 @@
                     _this.show.isLoading = true
                     this.$api.post('/wechat/web/realtoken',{'token':token})
                     .then(function(data){
-                        if(data.status==-1){
+                        if(data.errorCode && data.errorCode=='-1'){
                             _this.getCodeUrlAndRedirect()
-                        }else if (data.status==1 && !_this.$store.getters.getCurrentUser()){
+                        }else if (data.status==1 && !localStorage.getItem(Cookies.currentUser)){
                             sessionStorage.setItem(Cookies.Authorization,data.object);
-                            _this.$store.dispatch('setCurrentUser',data.object)
+                            sessionStorage.setItem(Cookies.currentUser,JSON.stringify(JSON.parse(base64.decode(data.object.split('.')[1])).sub));
                             _this.$router.push(sessionStorage.getItem(Cookies.pathBeforeAuthor))
                         }else{
                             _this.$router.push(sessionStorage.getItem(Cookies.pathBeforeAuthor))
@@ -60,23 +61,7 @@
                     window.location.href = _this.codeUrl
                 })
                 .catch(this.$errorHandle);
-            },
-            
-            // getOpenId:function(){
-            //     let _this = this;
-            //     this.$api.get('/wechat/web/author',{code:_this.code})
-            //     .then(function(data){
-            //         sessionStorage.setItem(Cookies.Authorization,data.object)
-            //         if(data.status==1){
-            //             console.info('该微信号已经注册');
-            //             _this.$router.push(sessionStorage.getItem(Cookies.pathBeforeAuthor))
-            //         }else{
-            //             console.info('该微信号未注册');
-            //             _this.$router.push('/BindPhone')
-            //         }
-            //     })
-            //     .catch(this.$errorHandle);
-            // }
+            }
         }
 
     }
