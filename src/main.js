@@ -5,6 +5,9 @@ import App from './App'
 import router from './router'
 import { WechatPlugin,ToastPlugin } from 'vux'
 import Vuex from 'vuex'
+import 'vue-event-calendar/dist/style.css' 
+import vueEventCalendar from 'vue-event-calendar'
+Vue.use(vueEventCalendar) 
 Vue.use(require('vue-wechat-title'))
 
 

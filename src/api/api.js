@@ -1,6 +1,6 @@
 import axios from "./axios"
 
-let apiUrl = "http://101.67.125.170";
+let apiUrl = "http://123.155.23.133";
 //let apiUrl = "";
 export default {
     install(Vue) {

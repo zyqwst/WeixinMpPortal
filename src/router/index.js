@@ -45,7 +45,6 @@ const router = new Router({
       ]
     },
     {path: '/bind',name: 'BindPhone',component: BindPhone},
-    //{path: '/author',name: 'Author',component: Author},
   ]
 })
 router.beforeEach(function(to,from,next){
