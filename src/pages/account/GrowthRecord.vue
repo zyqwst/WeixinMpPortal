@@ -18,7 +18,7 @@
 </template>
 <script>
     import loadingBox from '@/components/LoadingBox'
-    import LineChart from './LineChart'
+    import LineChart from '@/components/LineChart'
     import {ButtonTab,ButtonTabItem,XHeader} from 'vux'
     export default{
         components:{

@@ -1,0 +1,33 @@
+@basecolor:#ED5454;
+@white0:#fff;
+
+@black0:#101010;
+@black1:#8F8E94;
+@black2:#BBBBBB;
+.sy-page {
+    /*基本配色*/
+    background: @white0;
+    .color0{
+        color:@black0;
+    }
+    .shadow0{
+        box-shadow:0 0 20px 0 rgba(170,170,170,1);
+        border-radius:6px;
+    }
+    .shadow1{
+        box-shadow:0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    }
+    /*导航条配色*/
+    .vux-header{
+        background: #f8f8f8;
+        border-bottom:1px solid #dcdcdc;
+        .vux-header-left{
+            font-size:1em;
+            color:@black0;
+        }
+        .vux-header-title{
+            color:@black0;
+        }
+    }
+    .btn-bg{background:@basecolor}
+}

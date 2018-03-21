@@ -18,7 +18,8 @@ export default {
   margin-bottom: 50px;
   overflow: hidden;
   z-index:1;
-  position:relative
+  position:relative;
+  background:#fff;
 }
 
 </style>
