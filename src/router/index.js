@@ -15,6 +15,7 @@ import Score from '@/pages/account/wallet/Score'
 import SpaSubscribe from '@/pages/spa/SpaSubscribe'
 import ChooseStore from '@/pages/spa/ChooseStore'
 import ChooseService from '@/pages/spa/ChooseService'
+import ChooseTime from '@/pages/spa/ChooseTime'
 import Coupons from '@/pages/account/wallet/Coupons'
 import {getCookie, setCookie,Cookies} from '../utils/cookie-util'
 Vue.use(Router)
@@ -45,6 +46,7 @@ const router = new Router({
         {path:'spa',name:'SpaSubscribe',component:SpaSubscribe},
         {path:'choosestore',name:'ChooseStore',component:ChooseStore},
         {path:'chooseservice',name:'ChooseService',component:ChooseService},
+        {path:'choosetime',name:'ChooseTime',component:ChooseTime},
       ]
     },
     {path: '/bind',name: 'BindPhone',component: BindPhone},

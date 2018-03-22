@@ -16,7 +16,7 @@
                     <p class='left'>SPA服务</p>
                     <p class='right'>{{getSelectSpas||'选择服务'}}<i class='fa fa-angle-right'/></p>
                 </div>
-                <div class='item'>
+                <div class='item' @click='onSelectTime'>
                     <p class='left'>预约时间</p>
                     <p class='right'>{{selectDate || '选择时间'}}{{selectTime}}<i class='fa fa-angle-right'/></p>
                 </div>
@@ -47,15 +47,10 @@
         },
         data(){
             return{
-                show:{
-                    post:false,
-                    isLoading:false,
-                },
                 selectStore:{},
                 selectSpas:[],
                 selectDate:null,
                 selectTime:null,
-                spas:[],
             }
         },
         computed:{
@@ -73,6 +68,9 @@
             onSelectService(){
                 this.$router.push({name:'ChooseService'})
             },
+            onSelectTime(){
+                this.$router.push({name:'ChooseTime'})
+            },
             gohome(){
                 alert('回到个人中心')
             }
@@ -80,7 +78,7 @@
     }
 </script>
 
-<style lang='less'>
+<style lang='less' >
     @import '~vux/src/styles/1px.less';
     @import '../../assets/app.less';
     #spa{

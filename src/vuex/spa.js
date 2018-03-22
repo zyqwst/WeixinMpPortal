@@ -12,6 +12,9 @@ export default{
         selectSpa({commit},selectSpas){
             commit('SELECTSPAS',selectSpas);
         },
+        clear({commit}){
+            commit('CLEAR');
+        }
     },
     mutations:{
         SELECTSTORE(state,selectStore){
@@ -19,6 +22,11 @@ export default{
         },
         SELECTSPAS(state,selectSpas){
             state.selectSpas = selectSpas
+        },
+        CLEAR(state){
+            state.selectSpas = []
+            state.selectDate = ''
+            state.selectTime = ''
         }
     },
     getters:{

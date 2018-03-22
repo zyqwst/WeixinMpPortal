@@ -1,6 +1,6 @@
 <template>
     <div class='sy-page'>
-        <x-header class="sy-topbar" :left-options="{showBack: false}" title='预约服务'>
+        <x-header class="sy-topbar" :left-options="{showBack: false}" title='预约时间'>
             <i slot='left' class='fa fa-chevron-left' @click='back'></i>
             <i slot='right' class='fa' style='color:#EF5350'  @click='confirm'>确认</i>
         </x-header>
@@ -38,16 +38,7 @@
                 selectSpa:[]
             }
         },
-        watch:{
-            "$store.state.spa.selectStore":function(){
-                this.$store.dispatch('clear')
-            }
-        },
         mounted(){
-            if(JSON.stringify(this.$store.state.spa.selectStore)=="{}"){
-                this.$router.replace({name:'SpaSubscribe'});
-                return;
-            }
             this.api()
         },
         methods:{
@@ -69,7 +60,6 @@
                 this.show.loading = true
                 this.show.post = false
                 let _this = this;
-                
                 if(this.spas.length>0){
                     this.show.post = true
                     this.show.loading = false
@@ -88,7 +78,7 @@
     }
 </script>
 
-<style lang='less' scoped>
+<style lang='less'>
     @import '../../assets/app.less';
     .sy-select{
         background: #ffffff url(../../assets/select.svg) no-repeat right bottom;
