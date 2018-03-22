@@ -13,7 +13,8 @@ import Barcode from '@/pages/account/Barcode'
 import Recharge from '@/pages/account/wallet/Recharge'
 import Score from '@/pages/account/wallet/Score'
 import SpaSubscribe from '@/pages/spa/SpaSubscribe'
-
+import ChooseStore from '@/pages/spa/ChooseStore'
+import ChooseService from '@/pages/spa/ChooseService'
 import Coupons from '@/pages/account/wallet/Coupons'
 import {getCookie, setCookie,Cookies} from '../utils/cookie-util'
 Vue.use(Router)
@@ -42,6 +43,8 @@ const router = new Router({
         {path:'coupons',component:Coupons},
         {path:'score',component:Score},
         {path:'spa',name:'SpaSubscribe',component:SpaSubscribe},
+        {path:'choosestore',name:'ChooseStore',component:ChooseStore},
+        {path:'chooseservice',name:'ChooseService',component:ChooseService},
       ]
     },
     {path: '/bind',name: 'BindPhone',component: BindPhone},
