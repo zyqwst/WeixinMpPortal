@@ -4,22 +4,26 @@
             <i slot='left' class='fa fa-chevron-left' @click='back'></i>
             <i slot='right' class='fa' style='color:#EF5350'  @click='confirm'>确认</i>
         </x-header>
-        <loading-box v-show="show.loading"></loading-box>
-        <div v-show='show.post' v-for='item in spas' class='spa' @click='selected(item)' :class="{'sy-select' : selectSpa.includes(item)}">
-            <div>    
-                <img src='https://modao.cc/uploads3/images/1806/18063564/raw_1521604760.jpeg'/>
-                <p class='name'>{{item}}</p>
+        <div class="time">
+            <div class="title">
+                <i class='fa fa-chevron-left' @click='lastDay'></i>
+                <span>{{selectDate}}</span>
+                <i class='fa fa-chevron-right' @click='nextDay'></i>
             </div>
-            <p class='sale'>已售89份</p>
+            <loading-box v-show="show.loading"></loading-box>
+            <div class="content">
+                <div @click='selected(i)' class="item" :class="{select:selectTime==i}" v-for='i in times' :key='i.key'>
+                    {{i.key}}
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <script>
-    import { TransferDom,XHeader,XTextarea, Group,XButton,Popup,PopupHeader,Radio  } from 'vux'
+    import { TransferDom,XHeader,XTextarea, Group,XButton,Popup,PopupHeader,Radio,dateFormat  } from 'vux'
     
     import loadingBox from '@/components/LoadingBox'
     import myPopup from '@/components/MyPopup'
-
     export default{
         components:{
             XHeader,
@@ -34,43 +38,83 @@
                     loading:false,
                     post:false,
                 },
-                spas:[],
-                selectSpa:[]
+                times:[],
+                selectDate:dateFormat(new Date(), 'YYYY-MM-DD'),
+                selectTime:null
             }
         },
         mounted(){
-            this.api()
+            if(JSON.stringify(this.$store.state.spa.selectStore)=="{}"){
+                this.$store.dispatch('toast',{show:true,text:'请先选择门店'})
+                this.$router.replace({name:'SpaSubscribe'});
+                return;
+            }
+            if(this.$store.state.spa.selectSpas.length==0){
+                this.$store.dispatch('toast',{show:true,text:'请先选择服务'})
+                this.$router.replace({name:'SpaSubscribe'});
+                return;
+            }
+            this.api();
         },
         methods:{
+            lastDay(){
+                this.selectDate = dateFormat(new Date(new Date(this.selectDate).getTime()-24*60*60*1000),'YYYY-MM-DD')
+                this.api()
+            },
+            nextDay(){
+                this.selectDate = dateFormat(new Date(new Date(this.selectDate).getTime()+24*60*60*1000),'YYYY-MM-DD')
+                this.api()
+            },
             back(){
                 this.$router.back()
             },
             confirm(){
-                this.$store.dispatch('selectSpa',this.selectSpa)
-                this.$router.back()
+                if(!this.selectDate || !this.selectTime){
+                    this.$store.dispatch('toast',{show:true,text:'请选择预约时间'})
+                    return
+                }
+                let _this = this
+                this.$store.dispatch('loading',true);
+                this.$api.post('/wechat/member/spa/validate/time',
+                {'storeId':this.$store.state.spa.selectStore.id,
+                 'spaArray[]':this.$store.state.spa.selectSpas,
+                 'selectDate':this.selectDate,
+                 'selectTime':this.selectTime.key,
+                 'encryptInfo':this.selectTime.value
+                })
+                .then(function(data){
+                    _this.$store.dispatch('loading',false);
+                    if(data.errorCode){
+                        _this.$store.dispatch('toast',{show:true,text:data.msg})
+                    }else{
+                        _this.$store.dispatch('selectedTime',{'selectDate':_this.selectDate,'selectTime':_this.selectTime})
+                        _this.$router.back()
+                    }
+                })
+                .catch(this.$errorHandle)
             },
             selected:function(item){
-                if(this.selectSpa.includes(item)){
-                    this.selectSpa.splice(this.selectSpa.findIndex(v => v==item),1)
-                }else{
-                    this.selectSpa.push(item)
-                }
+                this.selectTime = item;
             },
             api() {
                 this.show.loading = true
                 this.show.post = false
-                let _this = this;
-                if(this.spas.length>0){
-                    this.show.post = true
-                    this.show.loading = false
-                    return
-                }
-                this.$api.post('/wechat/member/spa',{'storeId':this.$store.state.spa.selectStore.id})
+                let _this = this
+                this.times.length=0
+                this.$api.post('/wechat/member/spa/schedule',
+                {'storeId':this.$store.state.spa.selectStore.id,
+                 'spaArray[]':this.$store.state.spa.selectSpas,
+                 'selectDate':this.selectDate})
                 .then(function(data){
-                    
-                    _this.show.post = true
                     _this.show.loading = false
-                    _this.spas = data.object
+                    _this.show.post = true
+                    if(data.errorCode){
+                        _this.$store.dispatch('toast',{show:true,text:data.msg})
+                    }else{
+                        Object.keys(data.object).forEach(key=>{
+                            _this.times.push({'key':key,'value':data.object[key]})
+                        })
+                    }
                 })
                 .catch(this.$errorHandle)
             },
@@ -84,39 +128,40 @@
         background: #ffffff url(../../assets/select.svg) no-repeat right bottom;
         background-size:1.6rem;
     }
-    .spa{
+    .time{
         .sy-box();
-        padding:@padding1;
-        margin:@padding0;
-        font-size:1rem;
         display: flex;
-        justify-content:space-between;
-            div{
-                display: flex;
+        flex-direction: column;
+        margin: 1.4rem;
+        overflow: hidden;
+        text-align:center;
+        color:@white0;
+        .title{
+            background:@basecolor;
+            padding:@padding0;
+            display: flex;
+            justify-content: space-between;
+            .fa{
+                margin-top:3px
             }
-            img{
-                width:4rem;
-                height:4rem;
-                border-radius:2rem;
+        }
+        .content{
+            color:@black0;
+            padding:@padding0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-arround;
+            .item{
+                border:1px solid @basecolor;
+                border-radius:1rem;
+                padding:@padding4 @padding0;
+                margin:@padding2;
             }
-            p{
-                margin-top:auto;
-                margin-bottom:auto;
-            }
-            p.name{
-                margin-left:@padding0;
-                
-            }
-            p.sale{
+            .select{
+                background: @basecolor;
                 color:@white0;
-                background:@basecolor;
-                border-radius:3px;
-                font-size:@padding3;
-                padding:@padding3;
-                height:@padding0;
-                line-height:@padding0;
             }
+        }
         
-    
     }
 </style>

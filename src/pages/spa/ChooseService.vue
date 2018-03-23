@@ -5,12 +5,15 @@
             <i slot='right' class='fa' style='color:#EF5350'  @click='confirm'>确认</i>
         </x-header>
         <loading-box v-show="show.loading"></loading-box>
-        <div v-show='show.post' v-for='item in spas' class='spa' @click='selected(item)' :class="{'sy-select' : selectSpa.includes(item)}">
+        <div v-show='show.post' v-for='item in spas' class='spa' @click='selected(item)' :class="{'sy-select' : selectSpas.includes(item)}">
             <div>    
                 <img src='https://modao.cc/uploads3/images/1806/18063564/raw_1521604760.jpeg'/>
                 <p class='name'>{{item}}</p>
             </div>
             <p class='sale'>已售89份</p>
+        </div>
+        <div v-show='spas.length==0' class='noitem'>
+            该门店无可提供的服务
         </div>
     </div>
 </template>
@@ -35,16 +38,12 @@
                     post:false,
                 },
                 spas:[],
-                selectSpa:[]
-            }
-        },
-        watch:{
-            "$store.state.spa.selectStore":function(){
-                this.$store.dispatch('clear')
+                selectSpas:[]
             }
         },
         mounted(){
             if(JSON.stringify(this.$store.state.spa.selectStore)=="{}"){
+                this.$store.dispatch('toast',{show:true,text:'请先选择门店'})
                 this.$router.replace({name:'SpaSubscribe'});
                 return;
             }
@@ -55,14 +54,28 @@
                 this.$router.back()
             },
             confirm(){
-                this.$store.dispatch('selectSpa',this.selectSpa)
-                this.$router.back()
+                this.$store.dispatch('loading',true);
+                let _this = this
+                this.$api.post('/wechat/member/spa/validate/group',{'storeId':this.$store.state.spa.selectStore.id,
+                'spaArray[]':this.selectSpas
+                })
+                .then(function(data){
+                    _this.$store.dispatch('loading',false);
+                    console.info(data)
+                    if(data.errorCode){
+                        _this.$store.dispatch('toast',{show:true,text:data.msg})
+                    }else{
+                        _this.$store.dispatch('selectSpa',_this.selectSpas.slice(0))
+                        _this.$router.back()
+                    }
+                })
+                .catch(this.$errorHandle)
             },
             selected:function(item){
-                if(this.selectSpa.includes(item)){
-                    this.selectSpa.splice(this.selectSpa.findIndex(v => v==item),1)
+                if(this.selectSpas.includes(item)){
+                    this.selectSpas.splice(this.selectSpas.findIndex(v => v==item),1)
                 }else{
-                    this.selectSpa.push(item)
+                    this.selectSpas.push(item)
                 }
             },
             api() {
@@ -70,11 +83,6 @@
                 this.show.post = false
                 let _this = this;
                 
-                if(this.spas.length>0){
-                    this.show.post = true
-                    this.show.loading = false
-                    return
-                }
                 this.$api.post('/wechat/member/spa',{'storeId':this.$store.state.spa.selectStore.id})
                 .then(function(data){
                     

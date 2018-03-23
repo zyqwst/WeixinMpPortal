@@ -1,9 +1,7 @@
 <template>
     <div>   
         <view-box >
-            <keep-alive>
                 <router-view  v-wechat-title="$route.meta.title"/>
-            </keep-alive>
         </view-box>
     </div>
 </template>

@@ -1,14 +1,25 @@
 <template>
   <div id="app">
-      <transition>
+      <loading v-model="isLoading"></loading>
+      <toast v-model="toast.show" type="text">{{toast.text}}</toast>
     <router-view/>
-    </transition>
   </div>
 </template>
 
 <script>
+import {Loading,Toast} from 'vux'
+import {mapState} from 'vuex'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+      Loading,Toast
+    },
+    computed: {
+      ...mapState({
+        isLoading: state => state.global.isLoading,
+        toast: state => state.global.toast
+      })
+    }
 }
 </script>
 

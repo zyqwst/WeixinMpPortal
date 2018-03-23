@@ -3,7 +3,8 @@
         <x-header class="sy-topbar" :left-options="{showBack: false}" title='服务预约'>
             <i slot='left' class='fa fa-user-o' @click='gohome'></i>
         </x-header>
-        <div class="card1 shadow0">
+        <loading-box v-show="show.loading"></loading-box>
+        <div class="card1 shadow0" v-show='!success && show.post'>
             <div class='title'>
                 <p>服务预约</p>
             </div>
@@ -18,22 +19,48 @@
                 </div>
                 <div class='item' @click='onSelectTime'>
                     <p class='left'>预约时间</p>
-                    <p class='right'>{{selectDate || '选择时间'}}{{selectTime}}<i class='fa fa-angle-right'/></p>
+                    <p class='right'>{{getSelectDate || '选择时间'}} {{getSelectTime.key}}<i class='fa fa-angle-right'/></p>
                 </div>
                 <div class="remark">
-                    <x-textarea :max="80" placeholder='备注...' style='border:2px dashed #bbb'></x-textarea>
+                    <x-textarea :max="80" v-model='remark' placeholder='备注...' style='border:2px dashed #bbb'></x-textarea>
                 </div>
                 <div class='btn'>
-                    <x-button type='primary' class='btn-bg shadow1'>预约</x-button>
+                    <x-button type='primary' class='btn-bg shadow1' @click.native='commit'>预约</x-button>
                 </div>
             </div>
         </div>
-        
+        <div v-show='success'>
+            <div class="card1 shadow0">
+                <div class='title'>
+                    <p>预约成功</p>
+                </div>
+                <div class="content">
+                    <div class='item'>
+                        <p class='left'>所选门店</p>
+                        <p class='right'>{{successData.store}}</p>
+                    </div>
+                    <div class='item'>
+                        <p class='left'>SPA服务</p>
+                        <p class='right'>{{successData.spa}}</p>
+                    </div>
+                    <div class='item'>
+                        <p class='left'>预约时间</p>
+                        <p class='right'>{{successData.beginTime}} </p>
+                    </div>
+                    <div class="remark">
+                        <p>备注：{{successData.remark}}</p>
+                    </div>
+                </div>
+            </div>
+                <div class='noitem'>
+                    预约成功后请提前10分钟到店，疑问请咨询0572-0909890，感谢您！
+                </div>
+            </div>
     </div>
 </template>
 <script>
     import { TransferDom,XHeader,XTextarea, Group,XButton,Popup,PopupHeader,Radio  } from 'vux'
-    
+    import loadingBox from '@/components/LoadingBox'
     export default{
         directives: {
             TransferDom
@@ -43,14 +70,21 @@
             XTextarea,
             Group,XButton,
             Popup,PopupHeader,Radio,
-            
+            loadingBox
         },
         data(){
             return{
+                show:{
+                    loading:false,
+                    post:true
+                },
                 selectStore:{},
                 selectSpas:[],
                 selectDate:null,
                 selectTime:null,
+                remark:'',
+                success:false,
+                successData:{}
             }
         },
         computed:{
@@ -59,6 +93,12 @@
             },
             getSelectSpas(){
                 return this.$store.state.spa.selectSpas.join('+')
+            },
+            getSelectDate(){
+                return this.$store.state.spa.selectDate
+            },
+            getSelectTime(){
+                return this.$store.state.spa.selectTime
             }
         },
         methods:{
@@ -73,6 +113,42 @@
             },
             gohome(){
                 alert('回到个人中心')
+            },
+            commit(){
+                if(JSON.stringify(this.getSelectStore)=='{}'){
+                    this.$store.dispatch('toast',{show:true,text:'请选择门店'})
+                    return
+                }
+                if(!this.getSelectSpas){
+                    this.$store.dispatch('toast',{show:true,text:'请选择服务'})
+                    return
+                }
+                if(!this.getSelectDate){
+                    this.$store.dispatch('toast',{show:true,text:'请选择预约时间'})
+                    return
+                }
+                
+                let _this = this
+                this.show.post = false
+                this.show.loading = true
+                this.$api.post('/wechat/member/spa/subscribe',{
+                    'storeId':this.getSelectStore.id,
+                    'spaArray[]':this.getSelectSpas,
+                    'selectDate':this.getSelectDate,
+                    'selectTime':this.getSelectTime.key,
+                    'encryptInfo':this.getSelectTime.value,
+                    'remark':this.remark
+                }).then(function(data){
+                    _this.show.post = true
+                    _this.show.loading = false
+                    if(data.errorCode){
+                        _this.$store.dispatch('toast',{show:true,text:'data.msg'})
+                    }else{
+                        _this.success = true
+                        _this.successData = data.object
+                    }
+                })
+                .catch(this.$errorHandle)
             }
         }
     }
@@ -114,6 +190,9 @@
                 }
                 div.remark{
                     padding:@padding0;
+                    text-align:left;
+                    font-size:0.9rem;
+                    color:@black0
                 }
                 div.btn{
                     padding:@padding0;
