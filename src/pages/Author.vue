@@ -43,6 +43,7 @@
                             _this.getCodeUrlAndRedirect()
                         }else if (data.status==1 && !localStorage.getItem(Cookies.currentUser)){
                             sessionStorage.setItem(Cookies.Authorization,data.object);
+                            console.info('data.object',data.object)
                             sessionStorage.setItem(Cookies.currentUser,JSON.stringify(JSON.parse(base64.decode(data.object.split('.')[1])).sub));
                             _this.$router.push(sessionStorage.getItem(Cookies.pathBeforeAuthor))
                         }else{

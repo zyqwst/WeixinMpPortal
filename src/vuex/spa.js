@@ -43,11 +43,11 @@ export default{
             state.remark = remark
         },
         CLEAR(state){
-            selectStore={}
-            selectSpas=[]
-            selectDate=null
-            selectTime={}
-            remark=null
+            state.selectStore={}
+            state.selectSpas=[]
+            state.selectDate=null
+            state.selectTime={}
+            state.remark=null
         }
     },
     getters:{

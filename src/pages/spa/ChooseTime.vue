@@ -10,11 +10,12 @@
                 <span>{{selectDate}}</span>
                 <i class='fa fa-chevron-right' @click='nextDay'></i>
             </div>
-            <loading-box v-show="show.loading"></loading-box>
+            
             <div class="content">
                 <div @click='selected(i)' class="item" :class="{select:selectTime==i}" v-for='i in times' :key='i.key'>
                     {{i.key}}
                 </div>
+                <div class='noitem' v-show='times.length==0'>当天无可预约时间段</div>
             </div>
         </div>
     </div>
@@ -34,10 +35,7 @@
         },
         data(){
             return{
-                show:{
-                    loading:false,
-                    post:false,
-                },
+                
                 times:[],
                 selectDate:dateFormat(new Date(), 'YYYY-MM-DD'),
                 selectTime:null
@@ -59,10 +57,12 @@
         methods:{
             lastDay(){
                 this.selectDate = dateFormat(new Date(new Date(this.selectDate).getTime()-24*60*60*1000),'YYYY-MM-DD')
+                this.$store.dispatch('selectedTime',{'selectDate':this.selectDate,'selectTime':{}})
                 this.api()
             },
             nextDay(){
                 this.selectDate = dateFormat(new Date(new Date(this.selectDate).getTime()+24*60*60*1000),'YYYY-MM-DD')
+                this.$store.dispatch('selectedTime',{'selectDate':this.selectDate,'selectTime':{}})
                 this.api()
             },
             back(){
@@ -97,17 +97,17 @@
                 this.selectTime = item;
             },
             api() {
-                this.show.loading = true
-                this.show.post = false
+                
                 let _this = this
                 this.times.length=0
+                this.$store.dispatch('loading',true);
                 this.$api.post('/wechat/member/spa/schedule',
                 {'storeId':this.$store.state.spa.selectStore.id,
                  'spaArray[]':this.$store.state.spa.selectSpas,
                  'selectDate':this.selectDate})
                 .then(function(data){
-                    _this.show.loading = false
-                    _this.show.post = true
+                    _this.$store.dispatch('loading',false);
+                   
                     if(data.errorCode){
                         _this.$store.dispatch('toast',{show:true,text:data.msg})
                     }else{

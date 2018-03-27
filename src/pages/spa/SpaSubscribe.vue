@@ -1,7 +1,8 @@
 <template>
     <div id='spa'class='sy-page'>
         <x-header class="sy-topbar" :left-options="{showBack: false}" title='服务预约'>
-            <i slot='left' class='fa fa-user-o' @click='gohome'></i>
+            <i slot='left' v-show='success' class='fa fa-chevron-left' @click='back'></i>
+            <i slot='right' class='fa fa-user fa' style="color:#8F8E94;font-size:1.4rem" @click='gohome'></i>
         </x-header>
         <loading-box v-show="show.loading"></loading-box>
         <div class="card1 shadow0" v-show='!success && show.post'>
@@ -102,6 +103,12 @@
             }
         },
         methods:{
+            back(){
+                this.success = false
+            },
+            gohome(){
+                this.$router.replace({name:'MyAccount'})
+            },
             onSelectStore(){
                 this.$router.push({name:'ChooseStore'})
             },
@@ -111,9 +118,7 @@
             onSelectTime(){
                 this.$router.push({name:'ChooseTime'})
             },
-            gohome(){
-                alert('回到个人中心')
-            },
+        
             commit(){
                 if(JSON.stringify(this.getSelectStore)=='{}'){
                     this.$store.dispatch('toast',{show:true,text:'请选择门店'})
@@ -146,6 +151,7 @@
                     }else{
                         _this.success = true
                         _this.successData = data.object
+                        _this.$store.dispatch('clear')
                     }
                 })
                 .catch(this.$errorHandle)
@@ -168,6 +174,7 @@
             .title{
                 background:@basecolor;
                 padding:@padding0;
+                font-size:@titlesize;
             }
             .content{
                 color:@black0;
@@ -176,7 +183,7 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
-                    font-size:0.9rem;
+                    font-size:@itemsize;
                     padding:@padding0;
                     p{margin:0}
                     p.left{
@@ -191,12 +198,12 @@
                 div.remark{
                     padding:@padding0;
                     text-align:left;
-                    font-size:0.9rem;
+                    font-size:@itemsize;
                     color:@black0
                 }
                 div.btn{
                     padding:@padding0;
-                    button{font-size:0.9rem;}
+                    button{font-size:@itemsize;}
                 }
             }
         }

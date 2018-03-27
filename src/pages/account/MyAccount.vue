@@ -76,10 +76,13 @@
         }
       },
       mounted(){
-        let curUser = JSON.parse(sessionStorage.getItem(Cookies.currentUser))
-        this.username = curUser.name||'---'
-        this.userid = curUser.id||'---'
-        this.getFetch()
+        if(sessionStorage.getItem(Cookies.currentUser)){
+            let curUser = JSON.parse(sessionStorage.getItem(Cookies.currentUser))
+            console.info('currentUser',curUser.name);
+            this.username = curUser.name||'---'
+            this.userid = curUser.id||'---'
+            this.getFetch()
+        }
       },
       methods:{
         getFetch(){

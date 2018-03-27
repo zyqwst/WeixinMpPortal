@@ -113,9 +113,9 @@
                 display: flex;
             }
             img{
-                width:4rem;
-                height:4rem;
-                border-radius:2rem;
+                width:@itemsize*4;
+                height:@itemsize*4;
+                border-radius:@itemsize*2;
             }
             p{
                 margin-top:auto;
@@ -129,10 +129,8 @@
                 color:@white0;
                 background:@basecolor;
                 border-radius:3px;
-                font-size:@padding3;
+                font-size:@smallsize;
                 padding:@padding3;
-                height:@padding0;
-                line-height:@padding0;
             }
         
     

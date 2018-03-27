@@ -81,11 +81,11 @@
         .sy-box();
         padding:@padding1;
         margin:@padding0;
-        font-size:0.8rem;
+        font-size:@itemsize;
         display: flex;
         justify-content:space-between;
         div:nth-child(1){
-            border-left:3px solid spin(@basecolor,180);
+            border-left:3px solid @basecolor;
             padding-left:@padding4;
             display: flex;
             flex-direction: column;
@@ -93,9 +93,10 @@
         p{
             margin:@padding4;
             color:@black1;
+            font-size:@smallsize;
         }
         p.name{
-            font-size:1rem;
+            font-size:@itemsize;
             color:@black0;
         }
         .nav{
