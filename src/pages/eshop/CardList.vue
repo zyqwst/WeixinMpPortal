@@ -1,9 +1,29 @@
 <template>
-    <div id="eshop-cardlist">
+    <div id="eshop-cardlist" class='sy-page'>
+        <div class="header">
+            <div class="content-wrapper">
+                <div class="content-wrapper">
+                    <div class="avatar"></div>
+                    <div class="content"></div>
+                    <div class="support-count">
+                        <span class="count"></span>
+                        <i class="icon-keyboard_arrow_right"></i>
+                    </div>
+                    <div class="bulletin-wrapper">
+                        <span class="bulletin-title"></span>
+                        <span class="bulletin-text"></span>
+                        <i class="icon-keyboard_arrow_right"></i>
+                    </div>
+                    <div class="background">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="goods">
             <div class="menu-wrapper" ref="menuWrapper">
                 <ul>
-                    <li v-for="(item,index) in cards.menus" class="menu-item" :class="{'current':currentIndex===index}" @click="selectMenu(index,$event)"
+                    <li v-for="(item,index) in cards" class="menu-item" :class="{'current':currentIndex==index}" @click="selectMenu(index,$event)"
                         ref="menuList">
                         <span class="text border-1px">
                            {{item.name}}
@@ -13,10 +33,10 @@
             </div>
             <div class="foods-wrapper" ref="foodsWrapper">
                 <ul>
-                    <li v-for="item in cards.foods" class="food-list" ref="foodList">
-                        <h1 class="title">{{item.name}}</h1>
+                    <li v-for="item in cards" class="food-list" ref="foodList">
+                        <h1 class="title">{{cards.find(i=>i.menuid==item.menuid).name}}</h1>
                         <ul>
-                            <li @click="selectFood(food,$event)" v-for="food in item.food" class="food-item border-1px">
+                            <li @click="selectFood(food,$event)" v-for="food in item.foods" class="food-item border-1px">
                                 <div class="icon">
                                     <img width="57" height="57" :src="food.icon">
                                 </div>
@@ -42,34 +62,41 @@
 </template>
 <script>
     import BScroll from 'better-scroll'
+    import {XHeader } from 'vux'
+    
     export default {
+        components:{
+            XHeader
+        },
         data() {
             return {
 
                 cards: {},
                 listHeight: [],
                 scrollY: 0,
-                selectedFood: {}
+                selectedFood: {},
+                currentIndex:0
             }
         },
         computed: {
-            currentIndex() {
-                for (let i = 0; i < this.listHeight.length; i++) {
-                    let height1 = this.listHeight[i];
-                    let height2 = this.listHeight[i + 1];
-                    if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-                        this._followScroll(i);
-                        return i;
-                    }
-                }
-                return 0;
-            },
+            // currentIndex() {
+            //     console.info(this.listHeight)
+            //     for (let i = 0; i < this.listHeight.length; i++) {
+            //         let height1 = this.listHeight[i];
+            //         let height2 = this.listHeight[i + 1];
+            //         if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
+            //             this._followScroll(i);
+            //             return i;
+            //         }
+            //     }
+            //     return 0;
+            // },
             selectFoods() {
                 let foods = [];
-                this.cards.foods.forEach((food) => {
-                    food.forEach((f) => {
-                        if (f.count) {
-                            foods.push(f);
+                this.cards.forEach((item) => {
+                    item.forEach((f) => {
+                        if (f.food.count) {
+                            foods.push(f.food);
                         }
                     });
                 });
@@ -80,6 +107,9 @@
             this.apiCards()
         },
         methods: {
+            gohome(){
+              alert('个人中心')  
+            },
             selectMenu(index, event) {
                 if (!event._constructed) {
                     return;
@@ -87,6 +117,7 @@
                 let foodList = this.$refs.foodList;
                 let el = foodList[index];
                 this.foodsScroll.scrollToElement(el, 300);
+                this.currentIndex = index
             },
             selectFood(food, event) {
                 if (!event._constructed) {
@@ -109,7 +140,7 @@
             _followScroll(index) {
                 let menuList = this.$refs.menuList;
                 let el = menuList[index];
-                if(this.meunScroll) this.meunScroll.scrollToElement(el, 300, 0, -100);
+                this.meunScroll.scrollToElement(el, 300, 0, -100);
             },
 
             initScroll() {
@@ -121,7 +152,6 @@
                     probeType: 3
                 })
                 this.foodsScroll.on('scroll', (pos) => {
-                    // 判断滑动方向，避免下拉时分类高亮错误（如第一分类商品数量为1时，下拉使得第二分类高亮）
                     if (pos.y <= 0) {
                         this.scrollY = Math.abs(Math.round(pos.y));
                     }

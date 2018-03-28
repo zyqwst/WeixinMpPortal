@@ -108,15 +108,13 @@ const barcode = function(){
     return successData({qrcode:Random.csentence(10,40),timestamp:1234});
 }
 const eshop = function(){
-    let obj={menus:[],foods:[]}
-    for(let i =0;i<Random.integer(1,8);i++){
-        let menu = {id:i,name:Random.csentence(2,4).replace('。','')}
+    let obj=[]
+    for(let i =0;i<Random.integer(6,20);i++){
         let foods = []
-        for(let j = 0;j<Random.integer(5,20);j++){
-            foods.push({id:j,menuid:i,name:Random.csentence(8,20).replace('。',''),icon:Random.dataImage('57x57', i+"-"+j),description:'xxx',sellCount:30,price:69})
+        for(let j = 0;j<Random.integer(10,20);j++){
+            foods.push({id:j,name:Random.csentence(8,20).replace('。',''),icon:Random.dataImage('57x57', i+"-"+j),description:'xxx',sellCount:30,price:69})
         }
-        obj.menus.push(menu)
-        obj.foods.push({'food':foods})
+        obj.push({menuid:i,name:Random.csentence(2,4).replace('。',''),'foods':foods})
     }
     return successData(obj)
 }
