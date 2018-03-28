@@ -1,7 +1,7 @@
 <template>
     <div class='sy-page'>
         <x-header class="sy-topbar" :left-options="{showBack: false}" title='预约服务'>
-            <i slot='left' class='fa fa-chevron-left' @click='back'></i>
+            <font-awesome-icon slot='left' icon='chevron-left' @click='back'/>
             <i slot='right' class='fa' style='color:#EF5350'  @click='confirm'>确认</i>
         </x-header>
         <loading-box v-show="show.loading"></loading-box>

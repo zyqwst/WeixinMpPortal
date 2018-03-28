@@ -12,6 +12,12 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.5",
+    "@fortawesome/fontawesome-free-brands": "^5.0.9",
+    "@fortawesome/fontawesome-free-regular": "^5.0.9",
+    "@fortawesome/fontawesome-free-solid": "^5.0.9",
+    "@fortawesome/vue-fontawesome": "^0.0.22",
+    "better-scroll": "^1.9.1",
     "chart.js": "^2.7.2",
     "vue": "^2.5.2",
     "vue-chartjs": "^3.2.1",

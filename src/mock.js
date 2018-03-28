@@ -103,8 +103,22 @@ const wallet = function(){
     }
     return successData(wallet)
 }
+
 const barcode = function(){
     return successData({qrcode:Random.csentence(10,40),timestamp:1234});
+}
+const eshop = function(){
+    let obj={menus:[],foods:[]}
+    for(let i =0;i<Random.integer(1,8);i++){
+        let menu = {id:i,name:Random.csentence(2,4).replace('。','')}
+        let foods = []
+        for(let j = 0;j<Random.integer(5,20);j++){
+            foods.push({id:j,menuid:i,name:Random.csentence(8,20).replace('。',''),icon:Random.dataImage('57x57', i+"-"+j),description:'xxx',sellCount:30,price:69})
+        }
+        obj.menus.push(menu)
+        obj.foods.push({'food':foods})
+    }
+    return successData(obj)
 }
 Mock.setup({
     timeout: '800-1000' // 表示响应时间介于 200 和 600 毫秒之间，默认值是'10-100'。
@@ -124,3 +138,4 @@ Mock.setup({
 // Mock.mock('/member/wallet',wallet)
 // /**电子会员卡（二维码数据） */
 // Mock.mock('/member/qrcode',barcode);
+Mock.mock('/eshop/cards',eshop)

@@ -1,8 +1,8 @@
 <template>
     <div id='spa'class='sy-page'>
         <x-header class="sy-topbar" :left-options="{showBack: false}" title='服务预约'>
-            <i slot='left' v-show='success' class='fa fa-chevron-left' @click='back'></i>
-            <i slot='right' class='fa fa-user fa' style="color:#8F8E94;font-size:1.4rem" @click='gohome'></i>
+            <font-awesome-icon slot='left' v-show='success' icon="chevron-left"  @click='back' />
+            <font-awesome-icon slot='right' icon='user' style="color:#8F8E94;font-size:1.4rem" @click='gohome'/>
         </x-header>
         <loading-box v-show="show.loading"></loading-box>
         <div class="card1 shadow0" v-show='!success && show.post'>

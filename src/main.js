@@ -7,6 +7,12 @@ import { WechatPlugin,ToastPlugin } from 'vux'
 import Vuex from 'vuex'
 import 'vue-event-calendar/dist/style.css' 
 import vueEventCalendar from 'vue-event-calendar'
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import fontawesome from '@fortawesome/fontawesome'
+import solid from '@fortawesome/fontawesome-free-solid'
+import regular from '@fortawesome/fontawesome-free-regular'
+import brands from '@fortawesome/fontawesome-free-brands'
+
 Vue.use(vueEventCalendar) 
 Vue.use(require('vue-wechat-title'))
 
@@ -17,7 +23,8 @@ import api from '@/api/api'
 import errorHandle from '@/utils/errorHandle'
 import store from '@/vuex/store'
 
-
+fontawesome.library.add(brands,solid,regular)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 
 Vue.use(Vuex)

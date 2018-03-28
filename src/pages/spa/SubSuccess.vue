@@ -1,7 +1,7 @@
 <template>
         <div id='spa'class='sy-page'>
             <x-header class="sy-topbar" :left-options="{showBack: false}" title='服务预约'>
-                <i slot='left' class='fa fa-chevron-left' @click='back'></i>
+                <font-awesome-icon slot='left' icon='chevron-left' @click='back'/>
             </x-header>
             <div>
             <div class="card1 shadow0">

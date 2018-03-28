@@ -1,7 +1,7 @@
 <template>
     <div class='sy-page'>
         <x-header class="sy-topbar" :left-options="{showBack: false}" title='选择门店'>
-                <i slot='left' class='fa fa-chevron-left' @click='back'></i>
+                <font-awesome-icon slot='left' icon='chevron-left' @click='back'/>
         </x-header>
         <loading-box v-show="show.loading"></loading-box>
         <div v-show='show.post' v-for='item in stores' class='store' @click='selectedStore(item)' :class="{'sy-select' : item==selectStore}">

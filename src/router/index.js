@@ -18,6 +18,10 @@ import ChooseService from '@/pages/spa/ChooseService'
 import ChooseTime from '@/pages/spa/ChooseTime'
 import SubSuccess from '@/pages/spa/SubSuccess'
 
+import ShopParent from '@/pages/eshop/ShopParent'
+import CardList from '@/pages/eshop/CardList'
+import ShopCart from '@/pages/eshop/ShopCart'
+
 import Coupons from '@/pages/account/wallet/Coupons'
 import {getCookie, setCookie,Cookies} from '../utils/cookie-util'
 Vue.use(Router)
@@ -50,6 +54,14 @@ const router = new Router({
         {path:'chooseservice',name:'ChooseService',component:ChooseService},
         {path:'choosetime',name:'ChooseTime',component:ChooseTime},
         {path:'subsuccess',name:'SubSuccess',component:SubSuccess},
+      ]
+    },
+    {
+      path:'/eshop',
+      component:ShopParent,
+      children:[
+        {path:'cards',name:'CardList',component:CardList},
+        {path:'shopcart',name:'ShopCart',component:ShopCart},
       ]
     },
     {path: '/bind',name: 'BindPhone',component: BindPhone},
