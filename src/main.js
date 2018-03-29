@@ -7,7 +7,7 @@ import { WechatPlugin,ToastPlugin } from 'vux'
 import Vuex from 'vuex'
 import 'vue-event-calendar/dist/style.css' 
 import vueEventCalendar from 'vue-event-calendar'
-import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import {FontAwesomeIcon,FontAwesomeLayers} from '@fortawesome/vue-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'
 import regular from '@fortawesome/fontawesome-free-regular'
@@ -25,6 +25,7 @@ import store from '@/vuex/store'
 
 fontawesome.library.add(brands,solid,regular)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-layers',FontAwesomeLayers)
 Vue.config.productionTip = false
 
 Vue.use(Vuex)
