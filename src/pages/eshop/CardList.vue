@@ -33,42 +33,40 @@
                     <li v-for="(item,index) in cards" class="menu-item" :class="{'current':currentIndex==index}" @click="selectMenu(index,$event)"
                         ref="menuList">
                         <span class="text border-1px">
-                            {{item.name}}
+                            <font-awesome-icon icon='fire' color='red' v-show='index==0' /> {{item.menuid}}
                         </span>
                     </li>
                 </ul>
             </div>
             <div class="foods-wrapper" ref="foodsWrapper">
                 <ul>
-                    <li v-for="item in cards" class="food-list" ref="foodList">
-                        <h1 class="title">{{cards.find(i=>i.menuid==item.menuid).name}}</h1>
+                    <li v-for="item,index in cards" class="food-list" ref="foodList">
+                        <h1 class="title">{{cards.find(i=>i.menuid==item.menuid).menuid}}</h1>
                         <ul>
-                            <li @click="selectFood(food,$event)" v-for="food in item.foods" class="food-item border-1px">
+                            <li @click="selectFood(food,$event)" v-for="food,index2 in item.foods" class="food-item border-1px">
                                 <div class="icon">
                                     <img width="57" height="57" :src="food.icon">
                                 </div>
                                 <div class="content">
                                     <h2 class="name">{{food.name}}</h2>
                                     <div class="extra">
-                                        <span class="count">月售{{food.sellCount}}份</span>
-                                        <span class="count">库存{{food.sku}}份</span>
+                                        <span class="count">月售{{food.monthSales}}份</span>
+                                        <span class="count">库存{{food.quantity}}份</span>
                                     </div>
                                     <div class="price">
                                         <span class="now">￥{{food.price}}</span>
                                     </div>
                                     <div class="cartcontrol-wrapper">
-                                        <font-awesome-layers class="minus">
-                                            <font-awesome-icon :icon="['far','circle']" />
-                                            <font-awesome-icon icon="minus" transform="shrink-6" style="color:@basecolor;margin-left:1px" />
-                                        </font-awesome-layers>
-                                        <span class='count'>100</span>
-                                        <font-awesome-icon class="plus" icon='plus-circle' />
+                                        <cart-control @add="addCart" :food="food"></cart-control>
                                     </div>
                                 </div>
                             </li>
                         </ul>
                     </li>
                 </ul>
+            </div>
+            <div v-show='false'>
+                详情
             </div>
         </div>
         <div class="shopcart">
@@ -81,14 +79,14 @@
                             </span>
                         </div>
                         <div class="num">
-                            2
+                            {{totalCount}}
                         </div>
                     </div>
                     <div class="price">
-                        <p>¥ 10</p>
+                        <p>¥ {{getAmount|| 0}}</p>
                     </div>
                 </div>
-                <div class="content-right">
+                <div class="content-right"  :class="{settle:getAmount>0}" @click.stop='goSettle'>
                     <div class="pay">去结算</div>
                 </div>
             </div>
@@ -98,52 +96,69 @@
 <script>
     import BScroll from 'better-scroll'
     import { XHeader } from 'vux'
-
+    import cartControl from './CartControl'
     export default {
         components: {
-            XHeader
+            XHeader,
+            cartControl
         },
         data() {
             return {
 
-                cards: {},
+                cards: [],
                 listHeight: [],
                 scrollY: 0,
-                selectedFood: {},
+                curFood: {},
                 currentIndex: 0
             }
         },
         computed: {
-            // currentIndex() {
-            //     console.info(this.listHeight)
-            //     for (let i = 0; i < this.listHeight.length; i++) {
-            //         let height1 = this.listHeight[i];
-            //         let height2 = this.listHeight[i + 1];
-            //         if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-            //             this._followScroll(i);
-            //             return i;
-            //         }
-            //     }
-            //     return 0;
-            // },
             selectFoods() {
                 let foods = [];
-                this.cards.forEach((item) => {
-                    item.forEach((f) => {
-                        if (f.food.count) {
-                            foods.push(f.food);
+                this.cards.forEach((good) => {
+                    good.foods.forEach((food) => {
+                        if (food.count) {
+                            foods.push(food);
                         }
                     });
                 });
+                this.$store.dispatch('addCart',foods)
                 return foods;
+            },
+            totalCount(){
+                let cnt = 0;
+                this.selectFoods.forEach(item =>{
+                    cnt += item.count
+                })
+                return cnt
+            },
+            getAmount(){
+                let amount = 0;
+                this.selectFoods.forEach(item =>{
+                    amount += item.count*item.price
+                })
+                return amount
             }
         },
-        created() {
+        mounted() {
             this.apiCards()
         },
         methods: {
             gohome() {
                 alert('个人中心')
+            },
+            
+            addCart() {
+                console.info('增加');
+            },
+            goSettle(){
+                if(this.$store.getters.getAllGoods().length==0) {
+                    this.$store.dispatch('toast',{show:true,text:'请先选择商品'})
+                    return;
+                }
+                //console.info('选中的项目',this.selectFood())
+                
+                this.$router.push({name:'ShopCart'})
             },
             selectMenu(index, event) {
                 if (!event._constructed) {
@@ -155,11 +170,11 @@
                 this.currentIndex = index
             },
             selectFood(food, event) {
-                if (!event._constructed) {
+                if (!event) {
                     return;
                 }
                 this.selectedFood = food;
-                this.$refs.food.show();
+                console.info('选中商品', food);
             },
 
             calculateHeight() {
@@ -194,9 +209,9 @@
             },
             apiCards() {
                 let _this = this
-                this.$api.get('/eshop/cards')
+                this.$api.get('/wechat/shop/coupons')
                     .then(function (data) {
-                        _this.cards = data.object;
+                        _this.cards = data.object
                         _this.$nextTick(() => {
                             _this.initScroll()
                             _this.calculateHeight()
@@ -362,6 +377,7 @@
                     color: @black1;
                     background: @white1;
                 }
+                
                 .food-item {
                     display: flex;
                     margin: 18px;
@@ -424,13 +440,11 @@
                             bottom: @smallsize;
                             color: @basecolor;
                             .minus {}
-                            .count {
-                                color: @black1;
-                                font-size: @xssize;
-                            }
+
                         }
                     }
                 }
+
             }
         }
         .goods .foods-wrapper .food-item .content .desc,
@@ -504,14 +518,24 @@
                     }
                 }
                 .content-right {
-                    background: @basecolor;
+                    background: @black0;
                     font-size: @smallsize;
                     height: 100%;
-                    padding: 0 1.2rem;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-
+                    padding:0 1.6rem;
+                    .pay{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                        height:100%;
+                        
+                    }
+                }
+                .settle{
+                    background: @basecolor ;
                 }
             }
         }
