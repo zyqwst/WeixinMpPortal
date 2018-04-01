@@ -112,9 +112,16 @@ const eshop = function(){
     for(let i =0;i<Random.integer(6,20);i++){
         let foods = []
         for(let j = 0;j<Random.integer(10,20);j++){
-            foods.push({id:j,name:Random.csentence(8,20).replace('。',''),icon:Random.dataImage('57x57', i+"-"+j),description:'xxx',sellCount:30,price:69,sku:40})
+            foods.push({
+                spId:i+'--'+j,name:Random.csentence(8,20).replace('。',''),
+                path:Random.dataImage('57x57', i+"-"+j),
+                description:'xxx',
+                monthSales:30,
+                price:69,
+                quantity:10
+            })
         }
-        obj.push({menuid:i,name:Random.csentence(2,4).replace('。',''),'foods':foods})
+        obj.push({menuid:Random.csentence(2,4).replace('。',''),'foods':foods})
     }
     return successData(obj)
 }
@@ -136,4 +143,4 @@ Mock.setup({
 // Mock.mock('/member/wallet',wallet)
 // /**电子会员卡（二维码数据） */
 // Mock.mock('/member/qrcode',barcode);
-Mock.mock('/eshop/cards',eshop)
+Mock.mock('/wechat/shop/coupons',eshop)

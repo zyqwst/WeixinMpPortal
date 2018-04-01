@@ -12,10 +12,9 @@ import fontawesome from '@fortawesome/fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'
 import regular from '@fortawesome/fontawesome-free-regular'
 import brands from '@fortawesome/fontawesome-free-brands'
-
 Vue.use(vueEventCalendar) 
 Vue.use(require('vue-wechat-title'))
-
+Vue.use(require('vue2-animate/dist/vue2-animate.min.css'))
 
 
 require('./mock.js')

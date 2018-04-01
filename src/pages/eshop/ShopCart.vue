@@ -6,11 +6,11 @@
         </x-header>
         <div class="scroll" ref="foodsWrapper">
             <div class="foods-wrapper">
-                <div class='noitem' v-show='totalCount==0'>购物车空空如也，快去挑选商品吧</div>
-                <ul>
-                    <li v-for="food in cartgoods" class="food-item border-1px">
+                    <div class='noitem' v-if='cartgoods.length==0'>购物车空空如也，快去挑选商品吧</div>
+                    <transition-group v-else  leave-active-class="fadeOutUp" tag='ul'>
+                    <li v-for="food in cartgoods" class="food-item border-1px" :key='food.spId'>
                         <div class="icon">
-                            <img width="100%" height="100%" :src="food.icon">
+                            <img width="100%" height="100%" :src="food.path">
                         </div>
                         <div class="content">
                             <h2 class="name">{{food.name}}</h2>
@@ -25,8 +25,8 @@
                             </div>
                         </div>
                     </li>
-
-                </ul>
+                    </transition-group>
+                
             </div>
         </div>
         <div class="total">
@@ -98,7 +98,23 @@
 
 <style scope lang='less'>
     @import '../../assets/app.less';
-
+    .bounce-enter-active {
+    animation: bounce-in .5s;
+    }
+    .bounce-leave-active {
+    animation: bounce-in .5s reverse;
+    }
+    @keyframes bounce-in {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+    }
     #eshop-cart {
         .background {
             background: rgba(241, 242, 243, 1);

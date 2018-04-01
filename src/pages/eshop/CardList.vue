@@ -45,7 +45,7 @@
                         <ul>
                             <li @click="selectFood(food,$event)" v-for="food,index2 in item.foods" class="food-item border-1px">
                                 <div class="icon">
-                                    <img width="57" height="57" :src="food.icon">
+                                    <img width="57" height="57" :src="food.path">
                                 </div>
                                 <div class="content">
                                     <h2 class="name">{{food.name}}</h2>

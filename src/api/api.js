@@ -1,7 +1,7 @@
 import axios from "./axios"
 
-let apiUrl = "http://localhost:9000";
-// let apiUrl = "";
+// let apiUrl = "http://localhost:9000";
+let apiUrl = "";
 export default {
     install(Vue) {
         Vue.prototype.$api = {
